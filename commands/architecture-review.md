@@ -1,6 +1,7 @@
 ---
 name: architecture-review
-description: Review the project's architecture and development patterns — evaluates module boundaries, data flow, coupling, scalability constraints, and recommends patterns that fit this specific project's domain and stage.
+description: Review the project's architecture — evaluates module boundaries, data flow, coupling, and scalability. Works with any AI model inside Handoff.
+version: 1.0
 ---
 
 # Architecture & Patterns Review

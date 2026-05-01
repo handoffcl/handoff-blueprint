@@ -1,0 +1,9 @@
+{
+  "name": "handoff-blueprint",
+  "description": "Structured Vibe Coding — bootstrap any app with context-first methodology. Works with Claude, GPT, Gemini, Mistral and any model inside Handoff.",
+  "version": "1.0.0",
+  "homepage": "https://github.com/pacman-db/handoff-blueprint",
+  "commands": "commands/",
+  "roles": "roles/",
+  "context_file": "HANDOFF.md"
+}

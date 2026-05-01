@@ -1,6 +1,7 @@
 ---
 name: security-review
-description: Run a security review on the current project — checks for OWASP Top 10, auth issues, secrets exposure, injection vulnerabilities, and domain-specific risks based on what the project does.
+description: Run a security review — checks OWASP Top 10, auth issues, secrets exposure, and injection vulnerabilities. Works with any AI model inside Handoff.
+version: 1.0
 ---
 
 # Security Review

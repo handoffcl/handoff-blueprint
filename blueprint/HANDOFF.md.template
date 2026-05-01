@@ -1,0 +1,51 @@
+# HANDOFF.md — {{PROJECT_NAME}}
+
+## Qué es este proyecto
+{{PROJECT_DESCRIPTION}}
+
+## Contexto vivo
+Lee siempre `CONTEXT.md` antes de empezar cualquier tarea — ahí está el estado actual,
+arquitectura y cambios recientes.
+
+## Stack
+{{STACK_SUMMARY}}
+
+## Comandos esenciales
+```bash
+{{QUALITY_COMMAND}}   # siempre antes de terminar
+{{DEV_COMMAND}}       # servidor de desarrollo
+{{TEST_COMMAND}}      # solo tests
+```
+
+## Roles disponibles — cuándo activarlos
+
+Tienes roles especializados en `.handoff/roles/`. Actívalos leyendo el archivo correspondiente
+**antes** de trabajar en esa área:
+
+| Tarea | Rol a activar | Archivo |
+|---|---|---|
+| APIs, base de datos, performance | Senior Backend | `.handoff/roles/senior-backend.md` |
+| Componentes, UX, accesibilidad | Senior Frontend | `.handoff/roles/senior-frontend.md` |
+| Flujos de usuario, diseño visual | Senior Design | `.handoff/roles/senior-design.md` |
+| Auditoría de seguridad, OWASP | Security Review | `.handoff/roles/security-review.md` |
+
+**Cómo activar un rol:**
+Lee el archivo del rol correspondiente y adopta esa perspectiva para el resto de la tarea.
+Si la tarea cambia de área, lee el nuevo rol antes de continuar.
+
+## Reglas del proyecto
+1. `{{QUALITY_COMMAND}}` en verde antes de cada commit
+2. Cada feature nueva: escribe el spec en `docs/specs/<nombre>.md` ANTES de codear
+3. Cada decisión de arquitectura: añade ADR en `docs/plan/v1-mvp.md`
+4. Nunca commitear `.env` — solo `.env.example` con descripciones
+5. Sin tests, sin merge
+
+## Qué NO hacer
+- ❌ No truncar contexto al cambiar de área — lee siempre CONTEXT.md primero
+- ❌ No hacer suposiciones sobre el stack — léelo de CONTEXT.md
+- ❌ No resolver sin antes leer el código real — usa las herramientas de lectura
+
+## Estructura de carpetas clave
+```
+{{FOLDER_STRUCTURE}}
+```

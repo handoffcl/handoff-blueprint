@@ -1,6 +1,7 @@
 ---
 name: code-quality
-description: Run a code quality review — checks consistency, dead code, test coverage gaps, type safety, error handling, and readability. Adapts to the project's actual stack and quality rules defined in CLAUDE.md.
+description: Run a code quality review — checks consistency, dead code, test coverage gaps, type safety, and readability. Reads HANDOFF.md for project-specific rules. Works with any AI model inside Handoff.
+version: 1.0
 ---
 
 # Code Quality Review
