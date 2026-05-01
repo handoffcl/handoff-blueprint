@@ -95,6 +95,34 @@
     .i-body { font-size: 13px; color: var(--text); line-height: 1.6; }
     .i-body small { display: block; color: var(--soft); font-size: 12px; margin-top: 2px; }
 
+    /* ── Ecosystem ── */
+    .eco-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+    @media (max-width: 640px) { .eco-grid { grid-template-columns: 1fr; } }
+    .eco-card { display: flex; flex-direction: column; gap: 10px; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px; }
+    .eco-active { border-color: rgba(167,139,250,0.4); background: rgba(167,139,250,0.04); }
+    .eco-soon { opacity: 0.55; }
+    .eco-header { display: flex; align-items: center; justify-content: space-between; }
+    .eco-badge { font-size: 10px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; padding: 2px 8px; border-radius: 4px; background: var(--purple-d); color: var(--purple); border: 1px solid rgba(167,139,250,0.25); }
+    .eco-badge-claude { background: rgba(201,100,66,0.12); color: #c96442; border-color: rgba(201,100,66,0.25); }
+    .eco-badge-gpt    { background: rgba(16,163,127,0.12); color: #10a37f; border-color: rgba(16,163,127,0.25); }
+    .eco-status { font-size: 11px; font-weight: 500; }
+    .eco-available { color: var(--green); }
+    .eco-coming    { color: var(--muted); }
+    .eco-icon { width: 40px; height: 40px; border-radius: 10px; background: var(--purple-d); border: 1px solid rgba(167,139,250,0.2); display: flex; align-items: center; justify-content: center; color: var(--purple); }
+    .eco-icon-claude { background: rgba(201,100,66,0.1); border-color: rgba(201,100,66,0.2); color: #c96442; }
+    .eco-icon-gpt    { background: rgba(16,163,127,0.1); border-color: rgba(16,163,127,0.2); color: #10a37f; }
+    .eco-card strong { font-size: 14px; font-weight: 600; color: var(--text); }
+    .eco-card > span { font-size: 12px; color: var(--soft); line-height: 1.55; }
+    .eco-chips { display: flex; flex-wrap: wrap; gap: 5px; }
+    .chip-sm { font-size: 10px; font-weight: 600; padding: 2px 7px; border-radius: 4px; border: 1px solid var(--border2); color: var(--soft); background: var(--surface2); }
+    .chip-sm.chip-claude  { background: rgba(201,100,66,0.1);  color: #c96442; border-color: rgba(201,100,66,0.25); }
+    .chip-sm.chip-openai  { background: rgba(16,163,127,0.1);  color: #10a37f; border-color: rgba(16,163,127,0.25); }
+    .chip-sm.chip-google  { background: rgba(66,133,244,0.1);  color: #4285f4; border-color: rgba(66,133,244,0.25); }
+    .chip-sm.chip-mistral { background: rgba(234,88,12,0.1);   color: #ea580c; border-color: rgba(234,88,12,0.25); }
+    .eco-link { font-size: 12px; color: var(--accent); margin-top: auto; }
+    .eco-link:hover { color: var(--accent-h); }
+    .eco-link-disabled { color: var(--muted); cursor: default; }
+
     /* ── Footer ── */
     footer { border-top: 1px solid var(--border); padding: 28px 0; text-align: center; font-size: 12px; color: var(--muted); }
     footer a { color: var(--soft); } footer a:hover { color: var(--text); }
@@ -255,6 +283,65 @@
             <strong>Senior Security Engineer</strong>
             <span>Mentalidad de atacante, OWASP Top 10, crypto, infraestructura, hallazgos con prioridad</span>
           </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Ecosystem -->
+  <div class="section">
+    <div class="container">
+      <div class="section-label">Ecosistema</div>
+      <h2>Blueprints disponibles</h2>
+      <p class="section-desc">Elige el blueprint según tu herramienta de IA. Todos comparten la misma filosofía — solo cambia el formato de los comandos.</p>
+      <div class="eco-grid">
+        <div class="eco-card eco-active">
+          <div class="eco-header">
+            <div class="eco-badge">Oficial</div>
+            <span class="eco-status eco-available">Disponible</span>
+          </div>
+          <div class="eco-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+          </div>
+          <strong>Handoff Blueprint</strong>
+          <span>Model-agnostic — funciona con Claude, GPT, Gemini y Mistral dentro de la extensión Handoff</span>
+          <div class="eco-chips">
+            <span class="chip-sm chip-claude">Claude</span>
+            <span class="chip-sm chip-openai">GPT</span>
+            <span class="chip-sm chip-google">Gemini</span>
+            <span class="chip-sm chip-mistral">Mistral</span>
+          </div>
+          <a href="https://github.com/pacman-db/handoff-blueprint" target="_blank" class="eco-link">pacman-db/handoff-blueprint →</a>
+        </div>
+        <div class="eco-card">
+          <div class="eco-header">
+            <div class="eco-badge eco-badge-claude">Claude Code</div>
+            <span class="eco-status eco-available">Disponible</span>
+          </div>
+          <div class="eco-icon eco-icon-claude">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M23.15 2.587L18.21.21a1.494 1.494 0 0 0-1.705.29l-9.46 8.63-4.12-3.128a.999.999 0 0 0-1.276.057L.327 7.261A1 1 0 0 0 .326 8.74L3.899 12 .326 15.26a1 1 0 0 0 .001 1.479L1.65 17.94a.999.999 0 0 0 1.276.057l4.12-3.128 9.46 8.63a1.492 1.492 0 0 0 1.704.29l4.942-2.377A1.5 1.5 0 0 0 24 20.06V3.939a1.5 1.5 0 0 0-.85-1.352z"/></svg>
+          </div>
+          <strong>AI App Blueprint</strong>
+          <span>Optimizado para Claude Code — comandos <code>/slash</code>, skills con <code>allowed-tools</code> y hooks de sesión</span>
+          <div class="eco-chips">
+            <span class="chip-sm chip-claude">Claude Code</span>
+          </div>
+          <a href="https://github.com/pacman-db/ai-app-blueprint" target="_blank" class="eco-link">pacman-db/ai-app-blueprint →</a>
+        </div>
+        <div class="eco-card eco-soon">
+          <div class="eco-header">
+            <div class="eco-badge eco-badge-gpt">GPT</div>
+            <span class="eco-status eco-coming">Próximamente</span>
+          </div>
+          <div class="eco-icon eco-icon-gpt">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+          </div>
+          <strong>GPT Blueprint</strong>
+          <span>Optimizado para ChatGPT y la API de OpenAI con Custom GPTs e instrucciones del sistema</span>
+          <div class="eco-chips">
+            <span class="chip-sm chip-openai">GPT-4o</span>
+          </div>
+          <span class="eco-link eco-link-disabled">Próximamente</span>
         </div>
       </div>
     </div>
