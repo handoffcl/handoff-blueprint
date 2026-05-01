@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Handoff Blueprint — Structured Vibe Coding</title>
+  <meta name="description" content="Comandos y roles model-agnostic para proyectos de software. Funciona con Claude, GPT, Gemini y Mistral dentro de Handoff.">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg:       #0d1117;
+      --surface:  #161b22;
+      --surface2: #21262d;
+      --border:   #30363d;
+      --border2:  #484f58;
+      --text:     #e6edf3;
+      --muted:    #656d76;
+      --soft:     #8b949e;
+      --accent:   #6366f1;
+      --accent-h: #818cf8;
+      --accent-d: rgba(99,102,241,0.15);
+      --accent-g: rgba(99,102,241,0.28);
+      --purple:   #a78bfa;
+      --purple-d: rgba(167,139,250,0.12);
+      --green:    #3fb950;
+    }
+    html { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 15px; line-height: 1.6; color: var(--text); background: var(--bg); -webkit-font-smoothing: antialiased; }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { color: var(--accent-h); }
+    code { font-family: 'SF Mono', 'Fira Code', monospace; font-size: 0.88em; background: var(--surface2); padding: 2px 6px; border-radius: 4px; border: 1px solid var(--border); }
+    kbd { font-family: inherit; font-size: 0.82em; background: var(--surface2); border: 1px solid var(--border2); border-radius: 5px; padding: 1px 7px; color: var(--soft); }
+
+    /* ── Layout ── */
+    .container { max-width: 840px; margin: 0 auto; padding: 0 24px; }
+    nav { border-bottom: 1px solid var(--border); padding: 14px 0; }
+    nav .inner { max-width: 840px; margin: 0 auto; padding: 0 24px; display: flex; align-items: center; justify-content: space-between; }
+    .nav-brand { font-size: 15px; font-weight: 600; color: var(--text); display: flex; align-items: center; gap: 8px; }
+    .nav-brand svg { color: var(--purple); }
+    .nav-links { display: flex; gap: 20px; font-size: 13px; color: var(--soft); }
+    .nav-links a { color: var(--soft); } .nav-links a:hover { color: var(--text); }
+
+    /* ── Hero ── */
+    .hero { padding: 72px 0 56px; text-align: center; }
+    .hero-badge { display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px; border-radius: 20px; background: var(--purple-d); border: 1px solid rgba(167,139,250,0.25); font-size: 12px; color: var(--purple); font-weight: 500; margin-bottom: 24px; }
+    h1 { font-size: clamp(28px, 5vw, 44px); font-weight: 700; line-height: 1.15; letter-spacing: -0.5px; margin-bottom: 16px; }
+    h1 span { color: var(--purple); }
+    .hero-sub { font-size: 16px; color: var(--soft); max-width: 540px; margin: 0 auto 32px; line-height: 1.7; }
+    .hero-models { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; margin-bottom: 36px; }
+    .model-chip { display: inline-flex; align-items: center; gap: 6px; padding: 5px 12px; border-radius: 20px; font-size: 12px; font-weight: 500; border: 1px solid var(--border2); background: var(--surface); color: var(--soft); }
+    .chip-claude   { border-color: rgba(201,100,66,0.3);  background: rgba(201,100,66,0.08);  color: #c96442; }
+    .chip-openai   { border-color: rgba(16,163,127,0.3);  background: rgba(16,163,127,0.08);  color: #10a37f; }
+    .chip-google   { border-color: rgba(66,133,244,0.3);  background: rgba(66,133,244,0.08);  color: #4285f4; }
+    .chip-mistral  { border-color: rgba(234,88,12,0.3);   background: rgba(234,88,12,0.08);   color: #ea580c; }
+    .hero-actions { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; }
+    .btn { display: inline-flex; align-items: center; gap: 8px; padding: 10px 20px; border-radius: 8px; font-size: 14px; font-weight: 500; border: none; cursor: pointer; transition: all 0.15s; }
+    .btn-primary { background: var(--accent); color: #fff; } .btn-primary:hover { background: var(--accent-h); box-shadow: 0 2px 12px var(--accent-g); color: #fff; }
+    .btn-ghost { background: transparent; color: var(--soft); border: 1px solid var(--border2); } .btn-ghost:hover { color: var(--text); border-color: var(--soft); background: var(--surface2); }
+
+    /* ── How it works ── */
+    .section { padding: 56px 0; border-top: 1px solid var(--border); }
+    .section-label { font-size: 11px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase; color: var(--accent); margin-bottom: 8px; }
+    h2 { font-size: 22px; font-weight: 700; margin-bottom: 8px; }
+    .section-desc { color: var(--soft); font-size: 14px; margin-bottom: 28px; line-height: 1.7; }
+
+    .steps { display: flex; flex-direction: column; gap: 0; }
+    .step { display: flex; gap: 14px; align-items: flex-start; padding: 16px; background: var(--surface); border: 1px solid var(--border); }
+    .step:first-child { border-radius: 10px 10px 0 0; }
+    .step:last-child  { border-radius: 0 0 10px 10px; }
+    .step + .step { border-top: none; }
+    .step-num { flex-shrink: 0; width: 24px; height: 24px; border-radius: 50%; background: var(--accent); color: #fff; font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center; }
+    .step-body { font-size: 14px; color: var(--text); padding-top: 2px; }
+    .step-body small { display: block; color: var(--soft); font-size: 12px; margin-top: 3px; }
+
+    /* ── Commands grid ── */
+    .cmd-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    @media (max-width: 580px) { .cmd-grid { grid-template-columns: 1fr; } }
+    .cmd-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 18px; transition: border-color 0.15s, box-shadow 0.15s; }
+    .cmd-card:hover { border-color: var(--border2); box-shadow: 0 4px 20px rgba(0,0,0,0.25); }
+    .cmd-icon { width: 36px; height: 36px; border-radius: 8px; background: var(--purple-d); border: 1px solid rgba(167,139,250,0.2); display: flex; align-items: center; justify-content: center; color: var(--purple); margin-bottom: 12px; }
+    .cmd-name { font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 5px; }
+    .cmd-desc { font-size: 12px; color: var(--soft); line-height: 1.55; }
+
+    /* ── Roles ── */
+    .roles-list { display: flex; flex-direction: column; gap: 8px; }
+    .role-row { display: flex; align-items: flex-start; gap: 12px; padding: 14px 16px; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; }
+    .role-badge { flex-shrink: 0; padding: 3px 10px; border-radius: 5px; font-size: 11px; font-weight: 600; background: var(--purple-d); color: var(--purple); border: 1px solid rgba(167,139,250,0.2); white-space: nowrap; }
+    .role-info strong { display: block; font-size: 13px; color: var(--text); margin-bottom: 2px; }
+    .role-info span { font-size: 12px; color: var(--soft); }
+
+    /* ── Install ── */
+    .install-box { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 28px; }
+    .install-step { display: flex; align-items: flex-start; gap: 12px; padding: 10px 0; }
+    .install-step + .install-step { border-top: 1px solid var(--border); }
+    .i-num { flex-shrink: 0; width: 20px; height: 20px; border-radius: 50%; background: var(--surface2); border: 1px solid var(--border2); color: var(--soft); font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center; margin-top: 1px; }
+    .i-body { font-size: 13px; color: var(--text); line-height: 1.6; }
+    .i-body small { display: block; color: var(--soft); font-size: 12px; margin-top: 2px; }
+
+    /* ── Footer ── */
+    footer { border-top: 1px solid var(--border); padding: 28px 0; text-align: center; font-size: 12px; color: var(--muted); }
+    footer a { color: var(--soft); } footer a:hover { color: var(--text); }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="inner">
+    <div class="nav-brand">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+      Handoff Blueprint
+    </div>
+    <div class="nav-links">
+      <a href="https://github.com/pacman-db/handoff-blueprint" target="_blank">GitHub</a>
+      <a href="https://handoff.cl/vscode" target="_blank">Extensión</a>
+      <a href="https://handoff.cl" target="_blank">Handoff</a>
+    </div>
+  </div>
+</nav>
+
+<main>
+
+  <!-- Hero -->
+  <div class="hero">
+    <div class="container">
+      <div class="hero-badge">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+        Structured Vibe Coding
+      </div>
+      <h1>Tu proyecto, con<br><span>cualquier modelo de IA.</span></h1>
+      <p class="hero-sub">
+        Comandos y roles model-agnostic que se instalan en cualquier proyecto.
+        El agente lee las instrucciones y trabaja con las herramientas de Handoff —
+        sin importar qué modelo estés usando.
+      </p>
+      <div class="hero-models">
+        <span class="model-chip chip-claude">Claude</span>
+        <span class="model-chip chip-openai">GPT-4o</span>
+        <span class="model-chip chip-google">Gemini</span>
+        <span class="model-chip chip-mistral">Mistral</span>
+      </div>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="https://github.com/pacman-db/handoff-blueprint" target="_blank">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+          Ver en GitHub
+        </a>
+        <a class="btn btn-ghost" href="https://handoff.cl/vscode" target="_blank">
+          Descargar extensión →
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- How it works -->
+  <div class="section">
+    <div class="container">
+      <div class="section-label">Cómo funciona</div>
+      <h2>Tres pasos para empezar</h2>
+      <p class="section-desc">Sin configuración, sin lock-in. El blueprint se instala en tu proyecto y el agente lo usa directamente.</p>
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-body">
+            Abre <strong>Handoff</strong> en VS Code (<kbd>Cmd+Shift+H</kbd>) y haz clic en <strong>Plugin</strong> en la barra del agente.
+            <small>Si no tienes la extensión → <a href="https://handoff.cl/vscode">descárgala aquí</a></small>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-body">
+            Selecciona <strong>Handoff: Install Blueprint</strong> desde la paleta (<kbd>Cmd+Shift+P</kbd>).
+            El blueprint se instala en <code>.handoff/commands/</code> y <code>.handoff/roles/</code>.
+            <small>O manualmente: <code>git clone https://github.com/pacman-db/handoff-blueprint</code></small>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-body">
+            Haz clic en <strong>Plugin →</strong> elige un comando → el agente lo ejecuta con el modelo activo.
+            <small>Funciona con Claude, GPT-4o, Gemini, Mistral — lo que tengas configurado en Handoff</small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Commands -->
+  <div class="section">
+    <div class="container">
+      <div class="section-label">Comandos</div>
+      <h2>Lo que puede hacer el agente</h2>
+      <p class="section-desc">Cada comando es un archivo <code>.md</code> con instrucciones en lenguaje natural. Puedes modificarlos o agregar los tuyos.</p>
+      <div class="cmd-grid">
+        <div class="cmd-card">
+          <div class="cmd-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+          </div>
+          <div class="cmd-name">bootstrap-app</div>
+          <div class="cmd-desc">Crea un proyecto completo desde una idea — estructura, docs, CI/CD y contexto vivo. El proyecto se crea en <code>~/proyectos/</code>.</div>
+        </div>
+        <div class="cmd-card">
+          <div class="cmd-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+          </div>
+          <div class="cmd-name">architecture-review</div>
+          <div class="cmd-desc">Evalúa límites de módulos, flujo de datos, acoplamiento y restricciones de escalabilidad con recomendaciones priorizadas.</div>
+        </div>
+        <div class="cmd-card">
+          <div class="cmd-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+          </div>
+          <div class="cmd-name">code-quality</div>
+          <div class="cmd-desc">Detecta código muerto, brechas de tests, inconsistencias de tipos y problemas de legibilidad adaptado al stack real del proyecto.</div>
+        </div>
+        <div class="cmd-card">
+          <div class="cmd-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
+          <div class="cmd-name">security-review</div>
+          <div class="cmd-desc">OWASP Top 10, autenticación, secretos expuestos, inyección y hardening general. Reporta severidad y fix concreto por hallazgo.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Roles -->
+  <div class="section">
+    <div class="container">
+      <div class="section-label">Roles</div>
+      <h2>Expertise especializado por área</h2>
+      <p class="section-desc">Los roles son personas que el modelo adopta antes de trabajar en un área. Se activan automáticamente según el contexto — el agente lee <code>HANDOFF.md</code> para saber cuándo usarlos.</p>
+      <div class="roles-list">
+        <div class="role-row">
+          <div class="role-badge">senior-backend</div>
+          <div class="role-info">
+            <strong>Senior Backend Engineer</strong>
+            <span>APIs, bases de datos, performance, seguridad OWASP, patrones de arquitectura</span>
+          </div>
+        </div>
+        <div class="role-row">
+          <div class="role-badge">senior-frontend</div>
+          <div class="role-info">
+            <strong>Senior Frontend Engineer</strong>
+            <span>Componentes, Core Web Vitals, accesibilidad, patrones de UI, formularios</span>
+          </div>
+        </div>
+        <div class="role-row">
+          <div class="role-badge">senior-design</div>
+          <div class="role-info">
+            <strong>Senior UX/UI Designer</strong>
+            <span>Flujos de usuario, jerarquía visual, conversión, sistemas de diseño, mobile first</span>
+          </div>
+        </div>
+        <div class="role-row">
+          <div class="role-badge">security-review</div>
+          <div class="role-info">
+            <strong>Senior Security Engineer</strong>
+            <span>Mentalidad de atacante, OWASP Top 10, crypto, infraestructura, hallazgos con prioridad</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Install -->
+  <div class="section">
+    <div class="container">
+      <div class="section-label">Instalación</div>
+      <h2>Empieza en segundos</h2>
+      <p class="section-desc">No hay build step ni configuración. Solo instala y usa.</p>
+      <div class="install-box">
+        <div class="install-step">
+          <div class="i-num">1</div>
+          <div class="i-body">
+            Instala la extensión <strong>Handoff</strong> en VS Code
+            <small><a href="https://handoff.cl/vscode">handoff.cl/vscode</a> · requiere VS Code 1.85+ y tus propias API keys</small>
+          </div>
+        </div>
+        <div class="install-step">
+          <div class="i-num">2</div>
+          <div class="i-body">
+            Abre un proyecto en VS Code y ejecuta <kbd>Cmd+Shift+P</kbd> → <code>Handoff: Install Blueprint</code>
+            <small>Clona el blueprint y copia <code>.handoff/commands/</code> y <code>.handoff/roles/</code> en tu proyecto</small>
+          </div>
+        </div>
+        <div class="install-step">
+          <div class="i-num">3</div>
+          <div class="i-body">
+            Haz clic en <strong>Plugin</strong> en la barra del agente o presiona <kbd>Cmd+Shift+K</kbd>
+            <small>Aparece el selector con los comandos disponibles — elige y el agente lo ejecuta</small>
+          </div>
+        </div>
+        <div class="install-step">
+          <div class="i-num">4</div>
+          <div class="i-body">
+            Personaliza o agrega comandos en <code>.handoff/commands/</code> — cualquier <code>.md</code> aparece en el selector
+            <small>El agente sigue cualquier instrucción en lenguaje natural usando sus herramientas locales</small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  <div class="container">
+    <a href="https://github.com/pacman-db/handoff-blueprint" target="_blank">pacman-db/handoff-blueprint</a>
+    · hecho con <a href="https://handoff.cl" target="_blank">Handoff</a>
+    · MIT License
+  </div>
+</footer>
+
+</body>
+</html>
