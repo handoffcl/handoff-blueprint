@@ -20,16 +20,18 @@ The goal: a functional, stable, and scalable app from the first commit.
 
 ## Step 0 — Understand the idea
 
-Before creating anything, ask the user two questions and wait for both answers:
+Ask questions ONE AT A TIME. Wait for the answer before asking the next one.
 
-**Question 1:** "What app do you want to build? Describe it in one or two sentences."
+**First, ask only this:**
+"¿Qué app quieres construir? Descríbela en una o dos oraciones."
 
-**Question 2:** "What stack do you prefer?
-1. SvelteKit full-stack (frontend + backend in one repo, server routes as API) — recommended for most projects
-2. SvelteKit + FastAPI separate (when you need Python pipelines, ML, or AI integrations)
-3. Other (describe it)"
+Wait for the answer. Then ask:
+"¿Qué stack prefieres?
+1. SvelteKit full-stack (frontend + backend en un solo repo) — recomendado para la mayoría
+2. SvelteKit + FastAPI separados (cuando necesitas Python, ML o integraciones de IA)
+3. Otro (descríbelo)"
 
-Wait for both answers. Then use them to:
+Wait for the answer. Then use both answers to:
 - Name the project (slug format, e.g. `meeting-to-tasks`)
 - Fill `CONTEXT.md` with the real problem, not placeholders
 - Write `docs/vision/product-vision.md` adapted to that idea
