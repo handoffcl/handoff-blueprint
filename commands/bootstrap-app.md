@@ -6,6 +6,9 @@ version: 1.0
 
 # Bootstrap — New App
 
+> ⚠️ **Modelo recomendado:** Claude Sonnet 4.6 / GPT-5 / Gemini 2.5 Pro / Mistral Large.
+> Modelos rápidos (Haiku, Flash, Mini) pueden quedarse cortos en bootstrap por la cantidad de tool calls.
+
 You are the architect of this project. Follow this blueprint exactly.
 The goal: a functional, stable, and scalable app from the first commit.
 
