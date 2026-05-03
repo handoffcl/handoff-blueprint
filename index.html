@@ -87,6 +87,20 @@
     .role-info strong { display: block; font-size: 13px; color: var(--text); margin-bottom: 2px; }
     .role-info span { font-size: 12px; color: var(--soft); }
 
+    /* ── Key files ── */
+    .files-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+    @media (max-width: 900px) { .files-grid { grid-template-columns: 1fr; } }
+    .file-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 20px; display: flex; flex-direction: column; gap: 10px; }
+    .file-card.is-new { border-color: rgba(167,139,250,0.3); background: linear-gradient(180deg, rgba(167,139,250,0.06) 0%, var(--surface) 100%); }
+    .file-name { display: flex; align-items: center; gap: 8px; font-family: 'SF Mono', 'Fira Code', monospace; font-size: 13px; font-weight: 600; color: var(--text); }
+    .file-new-tag { font-size: 9px; font-weight: 700; padding: 2px 6px; border-radius: 4px; background: var(--purple-d); color: var(--purple); border: 1px solid rgba(167,139,250,0.3); letter-spacing: 0.5px; }
+    .file-purpose { font-size: 13px; color: var(--soft); line-height: 1.5; }
+    .file-block { padding-top: 8px; border-top: 1px solid var(--border); font-size: 12px; line-height: 1.5; }
+    .file-block strong { color: var(--text); display: block; margin-bottom: 3px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.4px; }
+    .file-block.gain strong { color: var(--green); }
+    .file-block.lose strong { color: #f87171; }
+    .file-block-text { color: var(--soft); }
+
     /* ── Install ── */
     .install-box { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 28px; }
     .install-step { display: flex; align-items: flex-start; gap: 12px; padding: 10px 0; }
@@ -303,6 +317,69 @@
             <small>Activar en la barra del agente; las operaciones destructivas siempre piden confirmación</small>
           </div>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Key files -->
+  <div class="section">
+    <div class="container">
+      <div class="section-label">Archivos clave</div>
+      <h2>Los tres archivos que mantienen al agente alineado</h2>
+      <p class="section-desc">Cada uno cumple una función distinta. Sin ellos, el agente improvisa, mezcla decisiones y deja deuda invisible.</p>
+      <div class="files-grid">
+
+        <article class="file-card is-new">
+          <div class="file-name">WORKING-AGREEMENT.md <span class="file-new-tag">NUEVO</span></div>
+          <div class="file-purpose">La regla central: <strong>spec antes de código</strong>. Antes de tocar un archivo, el agente analiza, sumariza, propone y espera tu OK.</div>
+          <div class="file-block">
+            <strong>Qué cubre</strong>
+            <div class="file-block-text">Todo cambio: features, bug fixes, refactors. Excepción: solo preguntas y cambios cosméticos en lote.</div>
+          </div>
+          <div class="file-block gain">
+            <strong>Qué se gana</strong>
+            <div class="file-block-text">Control sobre la IA antes de que toque archivos. Validas intent antes de gastar tokens. Cada decisión queda en un spec que sirve a futuras sesiones.</div>
+          </div>
+          <div class="file-block lose">
+            <strong>Sin él</strong>
+            <div class="file-block-text">El agente improvisa. Mezcla decisiones, inventa convenciones, deja deuda que aparece semanas después cuando alguien pregunta "¿por qué está así?" y nadie sabe.</div>
+          </div>
+        </article>
+
+        <article class="file-card">
+          <div class="file-name">HANDOFF.md</div>
+          <div class="file-purpose">El reglamento del proyecto que el agente lee al iniciar cada sesión.</div>
+          <div class="file-block">
+            <strong>Qué cubre</strong>
+            <div class="file-block-text">Reglas operativas: convenciones de código, quality gate, estructura de carpetas, qué NO hacer, roles disponibles. Apunta a CONTEXT.md y WORKING-AGREEMENT.md.</div>
+          </div>
+          <div class="file-block gain">
+            <strong>Qué se gana</strong>
+            <div class="file-block-text">Cada sesión arranca con las reglas del proyecto cargadas. El agente conoce tu naming convention, qué tests correr, qué archivos están off-limits.</div>
+          </div>
+          <div class="file-block lose">
+            <strong>Sin él</strong>
+            <div class="file-block-text">Re-explicas el setup cada sesión. El agente inventa convenciones que contradicen el resto del repo. Las inconsistencias se acumulan archivo por archivo.</div>
+          </div>
+        </article>
+
+        <article class="file-card">
+          <div class="file-name">CONTEXT.md</div>
+          <div class="file-purpose">Memoria viva del proyecto, auto-actualizada después de cada commit.</div>
+          <div class="file-block">
+            <strong>Qué cubre</strong>
+            <div class="file-block-text">Estado actual: qué se entregó, qué está en progreso, qué se decidió y por qué, qué NO tocar. Recent Changes auto-actualizado por el git post-commit hook.</div>
+          </div>
+          <div class="file-block gain">
+            <strong>Qué se gana</strong>
+            <div class="file-block-text">Memoria continua entre sesiones. La sesión 50 empieza con la historia condensada de las 49 anteriores. El agente no re-abre decisiones cerradas ni rompe lo que se hizo a propósito.</div>
+          </div>
+          <div class="file-block lose">
+            <strong>Sin él</strong>
+            <div class="file-block-text">Cada sesión empieza de cero. Pagas 10-15 minutos (y tokens) re-explicando qué es el proyecto. El agente sugiere lo que ya descartaste. Decisiones cerradas se re-abren por accidente.</div>
+          </div>
+        </article>
+
       </div>
     </div>
   </div>
