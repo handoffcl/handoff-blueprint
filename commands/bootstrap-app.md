@@ -9,6 +9,8 @@ version: 1.0
 > ⚠️ **Modelo recomendado:** Claude Sonnet 4.6 / GPT-5 / Gemini 2.5 Pro / Mistral Large.
 > Modelos rápidos (Haiku, Flash, Mini) pueden quedarse cortos en bootstrap por la cantidad de tool calls.
 
+> **Working agreement** — Before doing anything, read `WORKING-AGREEMENT.md` at the repo root. The rule applies here too: analyze → summarize → propose → wait for OK → write the spec → only then act. If `WORKING-AGREEMENT.md` doesn't exist yet, create it from this blueprint's template.
+
 You are the architect of this project. Follow this blueprint exactly.
 The goal: a functional, stable, and scalable app from the first commit.
 

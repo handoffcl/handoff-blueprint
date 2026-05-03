@@ -1,4 +1,11 @@
-# AI App Blueprint
+# Handoff Blueprint
+
+> **Writing specs before code is fine. Doing it by hand doesn't scale.**
+>
+> This blueprint is DDD lite, SDD and modular architecture put into practice:
+> instead of writing it by hand, AI generates them from your idea.
+
+---
 
 Stop re-explaining your project to Claude every session.
 
