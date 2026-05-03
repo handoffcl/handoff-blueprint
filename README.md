@@ -7,19 +7,22 @@
 
 ---
 
-Stop re-explaining your project to Claude every session.
+Stop re-explaining your project to your AI agent every session.
 
-This blueprint makes your repo self-documenting for AI —
-architecture, decisions, constraints, what's done and what's next.
-Claude reads it at the start of every session and starts working in 30 seconds.
+This blueprint makes your repo self-documenting for AI — architecture, decisions, constraints, what's done and what's next. Your AI agent reads it at the start of every session and starts working in 30 seconds.
+
+**Model-agnostic by design.** Works with the Handoff VS Code extension, Claude Code CLI, GPT, Gemini, Mistral, and any AI agent that respects `HANDOFF.md` and `WORKING-AGREEMENT.md`.
 
 ## Quickstart
 
 ```bash
-git clone https://github.com/pacman-db/ai-app-blueprint
-cp commands/bootstrap-app.md ~/.claude/commands/
+git clone https://github.com/pacman-db/handoff-blueprint
+cd handoff-blueprint
 
-# Then in any Claude Code session:
+# Install commands globally (works with the Handoff extension)
+bash scripts/install.sh
+
+# Then in any chat with your AI agent (Handoff extension, Claude Code, etc.):
 /bootstrap-app
 ```
 
@@ -34,7 +37,7 @@ If you bootstrapped your project before the `WORKING-AGREEMENT.md` rule existed,
 # From your project root
 curl -fsSL https://raw.githubusercontent.com/pacman-db/handoff-blueprint/main/blueprint/WORKING-AGREEMENT.md.template -o WORKING-AGREEMENT.md
 ```
-Then add this block at the top of your `CLAUDE.md`:
+Then add this block at the top of your `HANDOFF.md` (or whatever file holds your AI rules):
 ```markdown
 ## 🔴 Rule #1 — Read first, code after
 
@@ -44,58 +47,60 @@ Summary: analyze → summarize → propose → wait for OK → write spec → on
 ```
 
 **Option 2 — Re-run `/bootstrap-app`:**
-This will overwrite `CLAUDE.md` and other templates. Only do this on a clean branch where you can review the diff and pick the parts you want.
+This will overwrite `HANDOFF.md` and other templates. Only do this on a clean branch where you can review the diff and pick the parts you want.
 
 ---
 
 ## What's inside
 
 ```
-ai-app-blueprint/
-├── README.md                    ← you are here
-├── PHILOSOPHY.md                ← why this blueprint exists
+handoff-blueprint/
+├── README.md                       ← you are here
+├── PHILOSOPHY.md                   ← why this blueprint exists
+├── WORKING-AGREEMENT.md            ← how AI works in this project (the core rule)
 │
-├── blueprint/                   ← copy these to your project
-│   ├── CONTEXT.md.template      ← living context (auto-updated)
-│   ├── CLAUDE.md.template       ← project rules for Claude Code
-│   ├── Makefile.template        ← standardized quality commands
-│   ├── .env.example.template    ← env vars documented
+├── blueprint/                      ← copied to your project on bootstrap
+│   ├── CONTEXT.md.template         ← living context (auto-updated)
+│   ├── HANDOFF.md.template         ← project rules for the AI agent
+│   ├── WORKING-AGREEMENT.md.template ← AI workflow rules
+│   ├── Makefile.template           ← standardized quality commands
 │   └── docs/
-│       ├── vision/              ← product vision (what, for whom, why)
-│       ├── constitution/        ← principles (+ auto Project Status)
-│       ├── plan/                ← technical decisions + ADRs (+ auto Build Progress)
-│       ├── specs/               ← one spec per feature, written before code
-│       │   └── _spec.template.md ← spec template with status marker
-│       ├── clarify/             ← assumptions (+ auto Last Review)
-│       ├── modular/             ← module map + contracts
-│       └── sdd/                 ← system design document
+│       ├── vision/                 ← product vision (what, for whom, why)
+│       ├── constitution/           ← principles (+ auto Project Status)
+│       ├── plan/                   ← technical decisions + ADRs (+ auto Build Progress)
+│       ├── specs/                  ← one spec per feature, written before code
+│       │   └── _spec.template.md   ← spec template with status marker
+│       ├── clarify/                ← assumptions (+ auto Last Review)
+│       ├── modular/                ← module map + contracts
+│       └── sdd/                    ← system design document
 │
 ├── scripts/
-│   ├── update_docs.py           ← auto-updates ALL living docs after each commit
-│   ├── install_hooks.sh         ← installs git hooks (run once after clone)
-│   └── bootstrap.sh             ← full project bootstrapper
+│   ├── update_docs.py              ← auto-updates ALL living docs after each commit
+│   ├── install_hooks.sh            ← installs git hooks (run once after clone)
+│   └── bootstrap.sh                ← full project bootstrapper
 │
 ├── github/
-│   ├── workflows/ci.yml         ← quality gate on every push
+│   ├── workflows/ci.yml            ← quality gate on every push
 │   └── PULL_REQUEST_TEMPLATE.md
 │
-├── commands/
-│   └── bootstrap-app.md        ← Claude Code global command (/bootstrap-app)
+├── commands/                       ← slash commands (copied to ~/.handoff/commands/)
+│   ├── bootstrap-app.md            ← /bootstrap-app
+│   ├── architecture-review.md      ← /architecture-review
+│   ├── code-quality.md             ← /code-quality
+│   └── security-review.md          ← /security-review
 │
-└── examples/
-    ├── task-manager/            ← Example output: task manager app
-    └── bookia/                  ← Bookia (bookia.cl)
+└── examples/                       ← real apps built with this blueprint
 ```
 
 ---
 
 ## Quick Start
 
-### Option A — New project
+### Option A — New project (recommended)
 ```bash
 # 1. Clone this blueprint
-git clone https://github.com/pacman-db/ai-app-blueprint
-cd ai-app-blueprint
+git clone https://github.com/pacman-db/handoff-blueprint
+cd handoff-blueprint
 
 # 2. Bootstrap your project (English, default)
 bash scripts/bootstrap.sh my-app-name
@@ -103,21 +108,23 @@ bash scripts/bootstrap.sh my-app-name
 # 3. Bootstrap in Spanish
 bash scripts/bootstrap.sh mi-app --lang es
 
-# 4. Open in Claude Code and start building
-# All living docs will auto-update after every session and commit
+# 4. Open the project with your AI agent and run /bootstrap-app
+# All living docs will auto-update after every commit
 ```
 
 ### Option B — Existing project
 ```
-# In your Claude Code session:
+# In any chat with your AI agent:
 Read this file and adapt it to our existing project:
-/path/to/ai-app-blueprint/commands/bootstrap-app.md
+/path/to/handoff-blueprint/commands/bootstrap-app.md
 ```
 
-### Option C — Claude Code global command
+### Option C — Install commands globally
 ```bash
-cp commands/bootstrap-app.md ~/.claude/commands/
-# Then in any Claude Code session: /bootstrap-app
+bash scripts/install.sh
+# Installs /bootstrap-app, /architecture-review, /code-quality, /security-review
+# into ~/.handoff/commands/ (read by the Handoff VS Code extension and any agent
+# configured to look there).
 ```
 
 ---
@@ -172,10 +179,8 @@ You commit a feature
     │   ✓ assumptions.md      → ## Last Review     (staleness warning if needed)
     │   ✓ plan/v1-mvp.md      → ## Build Progress  (total commits, features shipped)
     │   ✓ specs/*.md          → <!-- status -->    (in-progress / pending)
-    │
-    ▼ Same happens when Claude Code session ends (Stop hook)
 
-Next session: Claude reads the docs → full context → starts working immediately
+Next session: your AI reads the docs → full context → starts working immediately
 ```
 
 **Key design principles of `update_docs.py`:**
@@ -222,8 +227,8 @@ This blueprint formalizes what we call **Structured Vibe Coding**:
 3. Human + AI design together (constitution, specs, ADRs)
 4. AI implements — guided by specs
 5. AI verifies — quality gate passes
-6. Docs update themselves — hooks fire after every commit and session
-7. Next session: Claude reads the docs and starts in 30 seconds
+6. Docs update themselves — hooks fire after every commit
+7. Next session: the AI reads the docs and starts in 30 seconds
 
 ---
 
@@ -240,10 +245,10 @@ The following is the recommended default for full-stack AI apps:
 | Auth | Firebase Auth | Google/Microsoft SSO, no custom auth plumbing |
 | Payments | Stripe | Global coverage, excellent DX |
 | Deploy | Railway | Managed PostgreSQL + app in one place, zero ops |
-| AI | Claude API (Anthropic) | Haiku for cheap tasks, Sonnet for analysis |
+| AI | Any provider you choose | Use your own keys — Anthropic, OpenAI, Google, Mistral |
 | Quality | ruff · mypy · pytest | Linting + types + tests — no exceptions |
 
-> **SvelteKit as full-stack:** For simpler apps, SvelteKit server routes (`+server.ts`) can replace a separate backend entirely — one repo, one deploy. Use a dedicated backend when you need language-specific libraries (ML, data processing, Claude SDK async pipelines) or a strict API contract.
+> **SvelteKit as full-stack:** For simpler apps, SvelteKit server routes (`+server.ts`) can replace a separate backend entirely — one repo, one deploy. Use a dedicated backend when you need language-specific libraries (ML, data processing, async AI pipelines) or a strict API contract.
 
 > **Local payment providers:** Stripe works globally. If you need local currency support (LATAM, etc.), drop in your regional provider — the blueprint doesn't prescribe one.
 
@@ -257,7 +262,7 @@ The following is the recommended default for full-stack AI apps:
 docs/specs/feature-name.md   ← write this first
     → defines: inputs, outputs, edge cases, cost constraints
 
-Claude reads spec → implements exactly that
+The AI reads spec → implements exactly that
     → no guessing, no scope creep
 ```
 
@@ -301,7 +306,7 @@ docs/plan/v1-mvp.md
     ADR-003: Cheap precheck before expensive AI call (cost)
 ```
 
-Claude reads ADRs → doesn't suggest the alternative you already ruled out.
+The AI reads ADRs → doesn't suggest the alternative you already ruled out.
 
 ---
 
@@ -319,7 +324,7 @@ Development        → Code that implements specs
 Quality            → Linting + types + tests (automated via CI)
 GitHub / CI        → Auto-quality gate on every push
 Deployment         → Reproducible, documented, automated
-CONTEXT.md         → Living memory, updated after every session and commit
+CONTEXT.md         → Living memory, updated after every commit
 ```
 
 ---
@@ -331,12 +336,11 @@ CONTEXT.md         → Living memory, updated after every session and commit
 
 ### [handoff.cl](https://handoff.cl) — Handoff
 
-Multi-LLM chat platform. Share and continue conversations across Claude, GPT, Gemini, Mistral and Perplexity with full context preserved.
+Multi-LLM chat platform. Share and continue conversations across multiple models with full context preserved.
 
 - **Stack:** FastAPI + SvelteKit 5 + Firebase Auth + PostgreSQL (Railway) + SSE streaming
 - **Features shipped:** multi-model routing, context management, tool calling (web search via Perplexity), progressive summarization, token counting, admin panel, sharing by URL
 - **Pattern demonstrated:** Multi-provider LLM adapters, streaming SSE, encrypted API keys (AES-256), model routing by message complexity, living docs auto-updated after every commit.
-- Built with **Claude Code only** — no GPT, no Gemini used during development.
 
 ---
 
@@ -345,7 +349,7 @@ Multi-LLM chat platform. Share and continue conversations across Claude, GPT, Ge
 Chilean identity document validator + mortgage evaluator.
 Built entirely with this blueprint. Both products in production.
 
-- **Validate:** 4-layer AI pipeline (format → pixels → Haiku → Sonnet). 85% of bad inputs rejected before AI.
+- **Validate:** 4-layer AI pipeline (format → pixels → cheap AI → full AI). 85% of bad inputs rejected before the expensive AI call.
 - **Hipotecario:** Rule-based mortgage evaluator with per-bank policy pattern. 5 entities active.
 - **Pattern demonstrated:** Policy pattern, cost-proportional pipeline, B2B API keys, unified payment webhook.
 
@@ -369,14 +373,27 @@ SaaS platform built with the same blueprint in a different domain.
 
 Traditional blueprints are written for human teams. This one is designed for **human + AI collaboration**:
 
-1. **Specs before code** — Claude writes better code when it knows the expected behavior first
-2. **Constitution** — prevents Claude from making decisions that violate your core principles
+1. **Specs before code** — the AI writes better code when it knows the expected behavior first
+2. **Constitution** — prevents the AI from making decisions that violate your core principles
 3. **CONTEXT.md** — eliminates the "re-explain everything" tax at the start of each session
-4. **Modular contracts** — Claude knows exactly what each module does and what it can't touch
-5. **ADRs** — Claude doesn't re-open decisions that were already made and documented
+4. **Modular contracts** — the AI knows exactly what each module does and what it can't touch
+5. **ADRs** — the AI doesn't re-open decisions that were already made and documented
 6. **Auto-update hooks** — all living docs stay current without manual work
 
 → [Read the full philosophy](PHILOSOPHY.md)
+
+---
+
+## Working with Handoff (VS Code extension)
+
+The [Handoff VS Code extension](https://handoff.cl/vscode) is the recommended host for this blueprint when you want a model-agnostic experience:
+
+- Switch between Claude, GPT, Gemini, Mistral mid-conversation without losing context
+- Use your own API keys (no platform tax)
+- Slash commands from `~/.handoff/commands/` or `.handoff/commands/` (workspace)
+- Same chat works in browser at [handoff.cl](https://handoff.cl) and inside VS Code
+
+The blueprint is the methodology. The extension is the host. Use them together for the full experience, or use the blueprint with any other AI agent that respects `HANDOFF.md`.
 
 ---
 

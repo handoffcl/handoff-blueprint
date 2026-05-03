@@ -1,16 +1,25 @@
 # HANDOFF.md — {{PROJECT_NAME}}
 
+## 🔴 Rule #1 — Read first, code after
+
+**Antes de cualquier acción**, lee `WORKING-AGREEMENT.md` y respétalo. No es opcional.
+
+Resumen del flujo: analizar → sumarizar → proponer → esperar OK → escribir spec → recién ahí codear.
+
+## Inicio de cada sesión
+
+**Lee `CONTEXT.md` primero.** Tiene el estado actual, arquitectura, decisiones clave y qué no tocar.
+
 ## Qué es este proyecto
+
 {{PROJECT_DESCRIPTION}}
 
-## Contexto vivo
-Lee siempre `CONTEXT.md` antes de empezar cualquier tarea — ahí está el estado actual,
-arquitectura y cambios recientes.
-
 ## Stack
+
 {{STACK_SUMMARY}}
 
 ## Comandos esenciales
+
 ```bash
 {{QUALITY_COMMAND}}   # siempre antes de terminar
 {{DEV_COMMAND}}       # servidor de desarrollo
@@ -19,8 +28,7 @@ arquitectura y cambios recientes.
 
 ## Roles disponibles — cuándo activarlos
 
-Tienes roles especializados en `.handoff/roles/`. Actívalos leyendo el archivo correspondiente
-**antes** de trabajar en esa área:
+Tienes roles especializados en `.handoff/roles/`. Actívalos leyendo el archivo correspondiente **antes** de trabajar en esa área:
 
 | Tarea | Rol a activar | Archivo |
 |---|---|---|
@@ -29,11 +37,20 @@ Tienes roles especializados en `.handoff/roles/`. Actívalos leyendo el archivo 
 | Flujos de usuario, diseño visual | Senior Design | `.handoff/roles/senior-design.md` |
 | Auditoría de seguridad, OWASP | Security Review | `.handoff/roles/security-review.md` |
 
-**Cómo activar un rol:**
-Lee el archivo del rol correspondiente y adopta esa perspectiva para el resto de la tarea.
-Si la tarea cambia de área, lee el nuevo rol antes de continuar.
+**Cómo activar un rol:** lee el archivo del rol correspondiente y adopta esa perspectiva para el resto de la tarea. Si la tarea cambia de área, lee el nuevo rol antes de continuar.
+
+## Reglas obligatorias antes de terminar cualquier tarea
+
+1. **Correr quality checks:**
+   ```bash
+   {{QUALITY_COMMAND}}
+   ```
+2. **Si hay errores de linting:** arréglalos antes de terminar.
+3. **Si hay errores de tipos:** arréglalos o documenta por qué con un comentario.
+4. **Si fallan tests:** arregla código o test según corresponda.
 
 ## Reglas del proyecto
+
 1. `{{QUALITY_COMMAND}}` en verde antes de cada commit
 2. Cada feature nueva: escribe el spec en `docs/specs/<nombre>.md` ANTES de codear
 3. Cada decisión de arquitectura: añade ADR en `docs/plan/v1-mvp.md`
@@ -41,11 +58,64 @@ Si la tarea cambia de área, lee el nuevo rol antes de continuar.
 5. Sin tests, sin merge
 
 ## Qué NO hacer
-- ❌ No truncar contexto al cambiar de área — lee siempre CONTEXT.md primero
-- ❌ No hacer suposiciones sobre el stack — léelo de CONTEXT.md
+
+- ❌ No truncar contexto al cambiar de área — lee siempre `CONTEXT.md` primero
+- ❌ No hacer suposiciones sobre el stack — léelo de `CONTEXT.md`
 - ❌ No resolver sin antes leer el código real — usa las herramientas de lectura
 
-## Estructura de carpetas clave
+## Estructura del proyecto
+
 ```
-{{FOLDER_STRUCTURE}}
+{{PROJECT_NAME}}/
+├── HANDOFF.md            # este archivo — reglas para la IA
+├── WORKING-AGREEMENT.md  # cómo trabaja la IA (regla central)
+├── CONTEXT.md            # contexto vivo del proyecto (auto-actualizado)
+├── .blueprint            # config del blueprint (LANG, version)
+├── .handoff/
+│   ├── commands/         # comandos slash disponibles en la sesión
+│   └── roles/            # roles especializados (backend, frontend, design, security)
+├── docs/
+│   ├── constitution/     # principios inmutables (+ auto Project Status)
+│   ├── clarify/          # supuestos + preguntas abiertas (+ auto Last Review)
+│   ├── vision/           # visión de producto y contexto de mercado
+│   ├── plan/             # plan técnico + ADRs (+ auto Build Progress)
+│   ├── modular/          # contratos entre módulos
+│   ├── sdd/              # system design document
+│   └── specs/            # un spec por feature (con marcadores de status)
+├── src/                  # código fuente
+├── tests/                # suite de tests
+└── scripts/
+    ├── update_docs.py    # auto-actualiza todos los living docs
+    └── install_hooks.sh  # instala git hooks
 ```
+
+## Convenciones de código
+
+- Sigue los idioms del lenguaje principal del proyecto
+- Largo máximo de línea: 100 caracteres
+- Anota tipos de parámetros y retorno en funciones públicas
+- Docstrings solo en funciones no triviales — explica *por qué*, no *qué*
+- Sin comentarios obvios. Explica intención cuando no se desprende del código
+
+## Documentar decisiones
+
+Al agregar una feature nueva:
+1. Si cambia arquitectura → agrega un ADR a `docs/plan/v1-mvp.md`
+2. Si es feature nueva → escribe el spec en `docs/specs/<nombre>.md` **antes** de codear
+3. Si agrega un slash command → crea `.handoff/commands/<nombre>.md`
+
+## Living docs (auto-actualizados después de cada commit)
+
+| Doc | Sección auto-actualizada |
+|---|---|
+| `CONTEXT.md` | `## Recent Changes` |
+| `docs/constitution/constitution.md` | `## Project Status` |
+| `docs/clarify/assumptions.md` | `## Last Review` |
+| `docs/plan/v1-mvp.md` | `## Build Progress` |
+| `docs/specs/*.md` | marcador `<!-- status: ... -->` |
+
+**Nunca edites manualmente estas secciones** — se sobrescriben en el próximo commit.
+
+## Variables de entorno requeridas
+
+Ver `.env.example` para la lista completa con descripciones.

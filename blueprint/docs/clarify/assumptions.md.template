@@ -20,7 +20,7 @@
 
 | Assumption | Risk if wrong |
 |---|---|
-| Claude API maintains current pricing | Adjust pricing model |
+| AI provider maintains current pricing | Adjust pricing model |
 | Managed hosting is sufficient for initial volume | Migrate to dedicated infrastructure |
 | {{TECH_ASSUMPTION_1}} | {{RISK_1}} |
 

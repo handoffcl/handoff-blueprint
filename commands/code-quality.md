@@ -8,13 +8,13 @@ version: 1.0
 
 > **Working agreement** — Before doing anything, read `WORKING-AGREEMENT.md` at the repo root. The rule applies here too: analyze → summarize → propose → wait for OK → write the spec → only then act. If `WORKING-AGREEMENT.md` doesn't exist yet, create it from the blueprint's template.
 
-You are reviewing this project for code quality. Read `CLAUDE.md` first — it defines the project's own quality rules. Your job is to check whether the project follows its own standards, then flag anything beyond that.
+You are reviewing this project for code quality. Read `HANDOFF.md` first — it defines the project's own quality rules. Your job is to check whether the project follows its own standards, then flag anything beyond that.
 
 ---
 
 ## Step 1 — Read the project's own rules
 
-Read `CLAUDE.md`. Note:
+Read `HANDOFF.md`. Note:
 - Linting tools and how to run them
 - Type checking requirements
 - Test commands
@@ -26,7 +26,7 @@ Then run the quality gate:
 # If defined in Makefile:
 make quality
 
-# Otherwise run what CLAUDE.md specifies
+# Otherwise run what HANDOFF.md specifies
 ```
 
 Report the output verbatim if there are errors.

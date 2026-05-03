@@ -1,7 +1,7 @@
 # CONTEXT.md — {{PROJECT_NAME}}
 
-> AI memory file. Auto-updated after every session (Stop hook) and every commit (post-commit hook).
-> Start every Claude Code session by reading this file first.
+> AI memory file. Auto-updated after every commit (git post-commit hook).
+> Start every AI session by reading this file first — and `HANDOFF.md` for the rules.
 > Goal: zero context loss between sessions.
 
 ---

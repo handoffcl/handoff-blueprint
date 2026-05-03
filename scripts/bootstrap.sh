@@ -1,5 +1,5 @@
 #!/bin/bash
-# bootstrap.sh — Create a new project from the AI App Blueprint v2
+# bootstrap.sh — Create a new project from the Handoff Blueprint
 #
 # Usage:
 #   bash scripts/bootstrap.sh <project-name>              (English, default)
@@ -7,9 +7,12 @@
 #
 # What it does:
 #   1. Creates project directory with full doc structure
-#   2. Installs git hooks (post-commit + Claude Code Stop)
+#   2. Installs git post-commit hook for living docs auto-update
 #   3. Creates .blueprint config file
 #   4. Copies all templates and renames placeholders
+#
+# Model-agnostic: works with any AI agent that respects HANDOFF.md and
+# WORKING-AGREEMENT.md (Handoff extension, Claude Code, GPT, Gemini, Mistral).
 
 set -e
 
@@ -52,7 +55,7 @@ cp "$BLUEPRINT_DIR/github/PULL_REQUEST_TEMPLATE.md" .github/
 
 # ── Rename templates ───────────────────────────────────────────────────────────
 mv CONTEXT.md.template CONTEXT.md
-mv CLAUDE.md.template CLAUDE.md
+mv HANDOFF.md.template HANDOFF.md
 mv WORKING-AGREEMENT.md.template WORKING-AGREEMENT.md 2>/dev/null || true
 mv .env.example.template .env.example 2>/dev/null || true
 mv Makefile.template Makefile 2>/dev/null || true
@@ -66,7 +69,7 @@ find . -name "*.md" -not -path "./.git/*" | xargs sed -i '' \
 mkdir -p docs/specs docs/vision docs/constitution docs/clarify
 mkdir -p docs/plan docs/modular docs/sdd
 mkdir -p tests observability
-mkdir -p .claude/commands
+mkdir -p .handoff/commands .handoff/roles
 
 # ── Create .blueprint config ───────────────────────────────────────────────────
 cat > .blueprint << EOF
@@ -109,23 +112,6 @@ EOF
 # ── Install git hooks ──────────────────────────────────────────────────────────
 bash scripts/install_hooks.sh
 
-# ── Create .claude/settings.json with Stop hook ───────────────────────────────
-mkdir -p .claude
-cat > .claude/settings.json << EOF
-{
-  "hooks": {
-    "Stop": [{
-      "hooks": [{
-        "type": "command",
-        "command": "python3 $(pwd)/scripts/update_docs.py 2>/dev/null || true",
-        "statusMessage": "Updating living docs..."
-      }]
-    }]
-  }
-}
-EOF
-echo "  ✓ Claude Code Stop hook configured"
-
 echo ""
 echo "✓ $PROJECT_NAME ready at $TARGET_DIR"
 echo ""
@@ -133,11 +119,11 @@ echo "Next steps:"
 echo "  1. cd $PROJECT_NAME"
 echo "  2. Fill in CONTEXT.md with your project description"
 echo "  3. Copy .env.example to .env and set your values"
-echo "  4. Open in Claude Code and run /bootstrap-app"
+echo "  4. Open the project with your AI agent (Handoff extension, Claude Code, etc.)"
+echo "     and run the bootstrap-app command"
 echo ""
 echo "Auto-update hooks installed:"
 echo "  → git post-commit: updates all living docs after every commit"
-echo "  → Claude Code Stop: updates all living docs after every session"
 echo ""
 echo "Living docs updated automatically:"
 echo "  → CONTEXT.md (recent changes)"

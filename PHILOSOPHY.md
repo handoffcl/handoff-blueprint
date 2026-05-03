@@ -6,7 +6,7 @@ Vibecoding — building apps by talking to an AI — is real and it works. But i
 
 **Every session starts from zero.**
 
-You open Claude Code, start a new conversation, and the first thing you do is spend 10-15 minutes explaining:
+You open your AI agent, start a new conversation, and the first thing you do is spend 10-15 minutes explaining:
 - What the project does
 - What decisions were made and why
 - What was built last session
@@ -66,9 +66,9 @@ Every project has a `CONTEXT.md` — a living document that captures:
 - What NOT to do (and why)
 - Where to find things
 
-This file is auto-updated after every session (Claude Code Stop hook) and after every commit (git post-commit hook). It's never stale because it updates itself.
+This file is auto-updated after every commit (git post-commit hook) and optionally after every session (if your AI agent supports session-end hooks). It's never stale because it updates itself.
 
-**Result:** Claude reads the file and starts working immediately — no re-explaining, no wrong assumptions, no re-opening closed decisions.
+**Result:** the AI reads the file and starts working immediately — no re-explaining, no wrong assumptions, no re-opening closed decisions.
 
 ---
 
@@ -118,7 +118,7 @@ The `update_docs.py` script detects phase from commit count and updates the Proj
 
 Not because it's "proper software engineering" — because it makes the AI write better code.
 
-When Claude has a spec that says:
+When the AI has a spec that says:
 > "The validation pipeline has 4 layers. Layer 1 is format/size (no cost). Layer 2 is local pixel analysis (no cost). Layer 3 is a cheap AI precheck (~$0.001). Layer 4 is full AI analysis (~$0.025). Each layer only runs if the previous one passed."
 
 ...it writes code that implements exactly that. Without the spec, it writes whatever seems reasonable, which may or may not match what you had in mind.
@@ -131,7 +131,7 @@ The spec lives in `docs/specs/<feature>.md`. The `<!-- status -->` marker in the
 
 ## Modular architecture
 
-Modules with clear contracts mean Claude knows exactly what it can and can't change.
+Modules with clear contracts mean the AI knows exactly what it can and can't change.
 
 When a module has a defined interface:
 ```
@@ -139,7 +139,7 @@ evaluator.py → returns AdjustedData
 policy.evaluate(data, adjusted) → returns PolicyResult
 ```
 
-Claude can change the internals of any module without breaking others. Without clear contracts, every change is a potential cascade.
+The AI can change the internals of any module without breaking others. Without clear contracts, every change is a potential cascade.
 
 ---
 
@@ -147,7 +147,7 @@ Claude can change the internals of any module without breaking others. Without c
 
 `make quality` runs linters + type checker + tests before every commit. This isn't optional.
 
-The reason: Claude Code writes code fast — sometimes too fast. The quality gate catches:
+The reason: AI agents write code fast — sometimes too fast. The quality gate catches:
 - Type errors that would surface in production
 - Style inconsistencies that accumulate into unreadable code
 - Regressions in existing functionality
@@ -169,7 +169,7 @@ Structured Vibe Coding keeps the speed and freedom of vibecoding, but adds:
 | **Structure that builds itself** | Docs auto-update after every commit |
 | **Guidance that evolves** | Specs, constitution, and ADRs grow with the product |
 | **Context that never expires** | CONTEXT.md always reflects the current state |
-| **Decisions that don't repeat** | ADRs document why — Claude won't re-suggest what was already decided |
+| **Decisions that don't repeat** | ADRs document why — the AI won't re-suggest what was already decided |
 
 The best development workflow right now:
 
@@ -179,7 +179,7 @@ The best development workflow right now:
 4. AI implements — guided by specs
 5. AI verifies — quality gate passes
 6. Everything documents itself — hooks run, docs update
-7. Next session: Claude reads the docs, starts working in 30 seconds
+7. Next session: the AI reads the docs, starts working in 30 seconds
 
 **This is not replacing developers.** It removes the parts that slow developers down —
 boilerplate, repetitive implementation, context-switching overhead —

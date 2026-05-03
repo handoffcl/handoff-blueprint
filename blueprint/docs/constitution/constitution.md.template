@@ -33,13 +33,13 @@ When detecting an error or invalid input:
 Every feature has a spec in `docs/specs/` written *before* the code.
 The spec is the contract — the code implements it, not the other way around.
 
-**Why:** When Claude has a spec, it writes code that implements exactly that.
+**Why:** When the AI has a spec, it writes code that implements exactly that.
 Without it, it writes what seems reasonable, which may not match what you meant.
 
 ### 4. Quality gate is non-negotiable
 `make quality` must pass before every commit. No exceptions, no workarounds.
 
-**Why:** Claude writes code fast — sometimes too fast. The quality gate catches
+**Why:** AI agents write code fast — sometimes too fast. The quality gate catches
 type errors, regressions, and style drift before they reach production.
 
 ### 5. Docs evolve with the product
