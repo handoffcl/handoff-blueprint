@@ -80,7 +80,7 @@ Tienes roles especializados en `.handoff/roles/`. Actívalos leyendo el archivo 
 │   ├── vision/           # visión de producto y contexto de mercado
 │   ├── plan/             # plan técnico + ADRs (+ auto Build Progress)
 │   ├── modular/          # contratos entre módulos
-│   ├── sdd/              # system design document
+│   ├── architecture/     # system design document (arquitectura, contratos de API)
 │   └── specs/            # un spec por feature (con marcadores de status)
 ├── src/                  # código fuente
 ├── tests/                # suite de tests
