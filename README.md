@@ -1,11 +1,34 @@
 # Handoff Blueprint
 
-> **Writing specs before code is fine. Doing it by hand doesn't scale.**
->
-> This blueprint is DDD lite, SDD and modular architecture put into practice:
-> instead of writing it by hand, AI generates them from your idea.
+> **[ES]** Escribir specs antes de codear está bien. Hacerlo a mano no escala.  
+> **[EN]** Writing specs before code is fine. Doing it by hand doesn't scale.
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
 ---
+
+## Español
+
+Deja de re-explicarle tu proyecto al agente de IA en cada sesión.
+
+Este blueprint hace que tu repo sea auto-documentado para la IA — arquitectura, decisiones, restricciones, qué está hecho y qué sigue. Tu agente lo lee al inicio de cada sesión y empieza a trabajar en 30 segundos.
+
+**Agnóstico al modelo.** Funciona con la extensión VS Code de Handoff, Claude Code CLI, GPT, Gemini, Mistral y cualquier agente de IA que respete `CONTEXT.md` y `WORKING-AGREEMENT.md`.
+
+### Inicio rápido
+
+```bash
+git clone https://github.com/handoffcl/handoff-blueprint
+cd handoff-blueprint
+bash scripts/install.sh
+
+# Luego en cualquier chat con tu agente IA:
+/bootstrap-app
+```
+
+---
+
+## English
 
 Stop re-explaining your project to your AI agent every session.
 
