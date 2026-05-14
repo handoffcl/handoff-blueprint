@@ -1,5 +1,17 @@
 # Contribuir / Contributing
 
+## ⚠️ Importante / Important
+
+> **[ES]** Este repositorio está conectado directamente a la extensión Handoff para VS Code.
+> Cualquier cambio en los templates o comandos se refleja automáticamente en la extensión cuando el usuario la actualiza.
+> **Revisa dos veces antes de hacer merge a `main`.**
+>
+> **[EN]** This repository is directly connected to the Handoff VS Code extension.
+> Any change to templates or commands is automatically reflected in the extension when users update it.
+> **Double-check before merging to `main`.**
+
+---
+
 ## Español
 
 ¡Gracias por querer contribuir a Handoff Blueprint!
@@ -23,6 +35,7 @@
 2. Describe el **por qué**, no solo el qué.
 3. Si es un cambio grande, abre un Issue primero.
 4. Respeta el tono y estructura existente del blueprint.
+5. **Cambios en `commands/` o `blueprint/` afectan la extensión VS Code directamente** — coordina con los maintainers antes de modificarlos.
 
 ---
 
@@ -49,6 +62,7 @@ Thanks for wanting to contribute to Handoff Blueprint!
 2. Describe the **why**, not just the what.
 3. For large changes, open an Issue first.
 4. Respect the existing tone and structure of the blueprint.
+5. **Changes to `commands/` or `blueprint/` directly affect the VS Code extension** — coordinate with maintainers before modifying them.
 
 ---
 
