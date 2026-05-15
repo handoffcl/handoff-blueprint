@@ -127,21 +127,44 @@ handoff-blueprint/
 
 `scripts/update_docs.py` no es solo un script — es el **harness** de tu flujo de desarrollo con IA.
 
-Un harness envuelve las sesiones del agente con infraestructura que se activa automáticamente antes y después de cada acción. Este blueprint implementa uno mediante dos hooks:
+Un harness envuelve las sesiones del agente con infraestructura que se activa automáticamente antes y después de cada acción. Este blueprint implementa uno:
 
-```
-git commit
-    └─→ pre-commit hook   → avisa si hay cambios en src/ sin spec
-    └─→ post-commit hook  → update_docs.py → todos los docs vivos actualizados
-
-Sesión del agente termina
-    └─→ Stop hook         → update_docs.py → CONTEXT.md actualizado para la próxima sesión
+```mermaid
+flowchart TD
+    A[git commit] --> B[pre-commit hook]
+    A --> C[post-commit hook]
+    B --> B1["⚠️ avisa: src/ cambió sin spec"]
+    C --> D[update_docs.py]
+    E[Sesión del agente termina] --> F{hook disponible?}
+    F -->|onSessionEnd .handoff/settings.json| D
+    F -->|scripts/watch.py opcional| D
+    D --> G[CONTEXT.md]
+    G --> G1["## Últimos cambios"]
+    G --> G2["## Specs pendientes ← detector de gaps"]
+    G --> G3["## Working Agreement ← recordatorio de regla"]
+    G --> H[Próxima sesión: agente lee contexto en 30s]
 ```
 
 Tres cosas se actualizan automáticamente en CONTEXT.md después de cada sesión:
 - **Últimos cambios** — commits clasificados (feat / fix / infra)
 - **Specs pendientes** — archivos en src/ modificados sin spec correspondiente (el detector de gaps)
 - **Working Agreement (activo)** — recordatorio de la regla para que el agente no olvide incluso en sesiones largas
+
+### Ingeniería de contexto — rotación progresiva
+
+Un CONTEXT.md de 600 líneas desperdicia tokens. El harness rota automáticamente:
+
+```mermaid
+flowchart LR
+    A[CONTEXT.md\nestado actual\n< 250 líneas] -->|supera umbral| B[rotate]
+    B --> C[CONTEXT-1.md\narchivo: fase anterior]
+    B --> D[CONTEXT.md\nreinicio: estado actual]
+    C -->|crece de nuevo| E[CONTEXT-2.md\narchivo siguiente]
+    A --> F[Agente lee CONTEXT.md primero]
+    F -->|necesita historia| G[Agente lee CONTEXT-1.md]
+```
+
+Configurable en `.blueprint` → `CONTEXT_ROTATE_LINES=250`
 
 ---
 

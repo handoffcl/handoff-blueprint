@@ -56,6 +56,24 @@
     .btn-primary { background: var(--accent); color: #fff; } .btn-primary:hover { background: var(--accent-h); box-shadow: 0 2px 12px var(--accent-g); color: #fff; }
     .btn-ghost { background: transparent; color: var(--soft); border: 1px solid var(--border2); } .btn-ghost:hover { color: var(--text); border-color: var(--soft); background: var(--surface2); }
 
+    /* ── Harness diagram ── */
+    .harness-diagram { display: flex; flex-direction: column; gap: 12px; margin: 28px 0; }
+    .harness-row { display: flex; align-items: center; gap: 0; }
+    .harness-trigger { background: var(--surface2); border: 1px solid var(--border2); border-radius: 8px; padding: 10px 16px; font-size: 13px; font-weight: 600; color: var(--text); min-width: 200px; }
+    .harness-arrow { color: var(--accent); font-size: 18px; padding: 0 10px; flex-shrink: 0; }
+    .harness-hook { background: var(--accent-d); border: 1px solid rgba(99,102,241,0.3); border-radius: 8px; padding: 8px 14px; font-size: 12px; color: var(--accent-h); font-family: 'SF Mono','Fira Code',monospace; }
+    .harness-result { display: flex; flex-direction: column; gap: 6px; margin-left: 40px; }
+    .harness-result-item { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--soft); }
+    .harness-result-item::before { content: '→'; color: var(--green); font-weight: 700; }
+    .harness-result-item strong { color: var(--text); }
+    .ctx-rotation { display: flex; gap: 16px; margin-top: 24px; flex-wrap: wrap; }
+    .ctx-card { flex: 1; min-width: 180px; background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 16px; }
+    .ctx-card.ctx-current { border-color: var(--accent); }
+    .ctx-card-label { font-size: 10px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; }
+    .ctx-card-name { font-size: 14px; font-weight: 700; font-family: 'SF Mono','Fira Code',monospace; margin-bottom: 4px; }
+    .ctx-card-desc { font-size: 12px; color: var(--soft); line-height: 1.5; }
+    .ctx-arrow { display: flex; align-items: center; color: var(--border2); font-size: 22px; padding-top: 24px; }
+
     /* ── How it works ── */
     .section { padding: 56px 0; border-top: 1px solid var(--border); }
     .section-label { font-size: 11px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase; color: var(--accent); margin-bottom: 8px; }
@@ -724,6 +742,68 @@
           </div>
         </div>
       </div>
+    </div>
+  </div>
+
+  <!-- Harness -->
+  <div class="section">
+    <div class="container">
+      <div class="section-label">Harness</div>
+      <h2>Infraestructura que envuelve al agente</h2>
+      <p class="section-desc">
+        <code>scripts/update_docs.py</code> no es solo un script — es el <strong>harness</strong> del flujo de desarrollo con IA.
+        Un harness ejecuta acciones automáticamente antes y después de cada sesión del agente, sin intervención manual.
+      </p>
+
+      <div class="harness-diagram">
+        <div class="harness-row">
+          <div class="harness-trigger">git commit</div>
+          <div class="harness-arrow">→</div>
+          <div style="display:flex;flex-direction:column;gap:6px;">
+            <div class="harness-hook">pre-commit hook → ⚠️ avisa si src/ cambió sin spec</div>
+            <div class="harness-hook">post-commit hook → update_docs.py</div>
+          </div>
+        </div>
+        <div class="harness-row">
+          <div class="harness-trigger">Sesión del agente termina</div>
+          <div class="harness-arrow">→</div>
+          <div style="display:flex;flex-direction:column;gap:6px;">
+            <div class="harness-hook">onSessionEnd (.handoff/settings.json) → update_docs.py</div>
+            <div class="harness-hook">scripts/watch.py (opcional) → update_docs.py</div>
+          </div>
+        </div>
+        <div class="harness-result">
+          <div class="harness-result-item"><strong>Últimos cambios</strong> — commits clasificados en CONTEXT.md</div>
+          <div class="harness-result-item"><strong>Specs pendientes</strong> — archivos sin spec detectados automáticamente</div>
+          <div class="harness-result-item"><strong>Working Agreement (activo)</strong> — regla visible en cada sesión</div>
+        </div>
+      </div>
+
+      <h3 style="font-size:16px;font-weight:700;margin:32px 0 8px;">Ingeniería de contexto — rotación progresiva</h3>
+      <p class="section-desc" style="margin-bottom:16px;">
+        Un CONTEXT.md de 600 líneas desperdicia tokens y entierra lo que importa.
+        El harness rota el archivo automáticamente cuando supera el umbral configurado.
+      </p>
+      <div class="ctx-rotation">
+        <div class="ctx-card ctx-current">
+          <div class="ctx-card-label">Activo</div>
+          <div class="ctx-card-name">CONTEXT.md</div>
+          <div class="ctx-card-desc">Estado actual. Lean, &lt; 250 líneas. El agente lo lee primero en cada sesión.</div>
+        </div>
+        <div class="ctx-arrow">→</div>
+        <div class="ctx-card">
+          <div class="ctx-card-label">Supera umbral</div>
+          <div class="ctx-card-name">rotate()</div>
+          <div class="ctx-card-desc">update_docs.py archiva CONTEXT.md y reinicia el archivo con solo el estado actual.</div>
+        </div>
+        <div class="ctx-arrow">→</div>
+        <div class="ctx-card">
+          <div class="ctx-card-label">Archivo</div>
+          <div class="ctx-card-name">CONTEXT-1.md</div>
+          <div class="ctx-card-desc">Historial comprimido de la fase anterior. El agente lo consulta solo si la tarea lo requiere.</div>
+        </div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px;">Configurable en <code>.blueprint</code> → <code>CONTEXT_ROTATE_LINES=250</code></p>
     </div>
   </div>
 
