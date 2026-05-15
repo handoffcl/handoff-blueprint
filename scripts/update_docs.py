@@ -3,8 +3,8 @@
 update_docs.py v2 — Keeps all living docs in sync after every commit.
 
 Triggered by:
-  - git post-commit hook (set up by install_hooks.sh)
-  - AI agent session-end hook (Stop hook or equivalent)
+  - git post-commit hook
+  - Claude Code Stop hook
 
 Surgically updates (never overwrites full files):
   - CONTEXT.md                    → ## Recent Changes
@@ -446,7 +446,7 @@ _CLARIFY_STUB: dict[str, str] = {
 
 | Assumption | Risk if wrong |
 |---|---|
-| AI provider maintains current pricing | Adjust pricing model |
+| Claude API maintains current pricing | Adjust pricing model |
 
 ---
 
@@ -490,7 +490,7 @@ _Auto-updated by scripts/update_docs.py_
 
 | Suposición | Riesgo si es falsa |
 |---|---|
-| El proveedor de IA mantiene precios actuales | Ajustar modelo de precios |
+| Claude API mantiene precios actuales | Ajustar modelo de precios |
 
 ---
 
@@ -768,6 +768,64 @@ def update_specs(commits: list[dict[str, str]]) -> int:
     return count
 
 
+# ── Context rotation ──────────────────────────────────────────────────────────
+
+CONTEXT_ROTATE_LINES = 250  # rotate when CONTEXT.md exceeds this
+
+
+def _load_rotate_threshold() -> int:
+    """Read CONTEXT_ROTATE_LINES from .blueprint config, default 250."""
+    config = ROOT / ".blueprint"
+    if config.exists():
+        for line in config.read_text(encoding="utf-8").splitlines():
+            if line.startswith("CONTEXT_ROTATE_LINES="):
+                try:
+                    return int(line.split("=", 1)[1].strip())
+                except ValueError:
+                    pass
+    return CONTEXT_ROTATE_LINES
+
+
+def rotate_context() -> bool:
+    """
+    Archive CONTEXT.md to CONTEXT-N.md when it grows too large.
+    Resets CONTEXT.md to a lean stub with a pointer to the archive.
+    Returns True if rotation happened.
+    """
+    f = ROOT / "CONTEXT.md"
+    if not f.exists():
+        return False
+
+    threshold = _load_rotate_threshold()
+    lines = f.read_text(encoding="utf-8").splitlines()
+    if len(lines) <= threshold:
+        return False
+
+    # Find next archive index
+    n = 1
+    while (ROOT / f"CONTEXT-{n}.md").exists():
+        n += 1
+
+    archive = ROOT / f"CONTEXT-{n}.md"
+    archive.write_text(f.read_text(encoding="utf-8"), encoding="utf-8")
+
+    # Reset CONTEXT.md to lean stub
+    today = datetime.now().strftime("%Y-%m-%d")
+    stub = (
+        f"# CONTEXT.md\n\n"
+        f"> Rotated {today} — previous context archived to `CONTEXT-{n}.md`\n\n"
+        f"## Current State\n\n"
+        f"_Fill in the current state of the project after rotation._\n\n"
+        f"## Architecture\n\n"
+        f"_Key modules and their responsibilities._\n\n"
+        f"## What NOT to touch\n\n"
+        f"_Constraints the AI must respect._\n\n"
+    )
+    f.write_text(stub, encoding="utf-8")
+    print(f"  ✓ CONTEXT.md rotated → CONTEXT-{n}.md ({len(lines)} lines archived)")
+    return True
+
+
 # ── Main ──────────────────────────────────────────────────────────────────────
 
 
@@ -782,6 +840,7 @@ def main() -> None:
 
     print("[docs] Updating living docs...")
     results = [
+        rotate_context(),
         update_context(commits, L),
         update_constitution(commits, L, lang),
         update_clarify(commits, L, lang),
