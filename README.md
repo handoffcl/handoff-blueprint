@@ -98,8 +98,8 @@ handoff-blueprint/
 │       └── architecture/           ← system design document (arquitectura, API contracts)
 │
 ├── scripts/
-│   ├── update_docs.py              ← auto-updates ALL living docs after each commit
-│   ├── install_hooks.sh            ← installs git hooks (run once after clone)
+│   ├── update_docs.py              ← harness core: auto-updates all living docs after each commit/session
+│   ├── install_hooks.sh            ← installs git hooks: pre-commit (spec check) + post-commit (docs)
 │   └── bootstrap.sh                ← full project bootstrapper
 │
 ├── github/
@@ -112,8 +112,36 @@ handoff-blueprint/
 │   ├── code-quality.md             ← /code-quality
 │   └── security-review.md          ← /security-review
 │
+├── roles/                          ← role personas para el agente IA
+│   ├── senior-backend.md           ← modo ingeniero backend senior
+│   ├── senior-frontend.md          ← modo ingeniero frontend senior
+│   ├── senior-design.md            ← modo diseñador UX/UI senior
+│   └── security-review.md          ← modo ingeniero de seguridad
+│
 └── examples/                       ← real apps built with this blueprint
 ```
+
+---
+
+## This is a harness
+
+`scripts/update_docs.py` no es solo un script — es el **harness** de tu flujo de desarrollo con IA.
+
+Un harness envuelve las sesiones del agente con infraestructura que se activa automáticamente antes y después de cada acción. Este blueprint implementa uno mediante dos hooks:
+
+```
+git commit
+    └─→ pre-commit hook   → avisa si hay cambios en src/ sin spec
+    └─→ post-commit hook  → update_docs.py → todos los docs vivos actualizados
+
+Sesión del agente termina
+    └─→ Stop hook         → update_docs.py → CONTEXT.md actualizado para la próxima sesión
+```
+
+Tres cosas se actualizan automáticamente en CONTEXT.md después de cada sesión:
+- **Últimos cambios** — commits clasificados (feat / fix / infra)
+- **Specs pendientes** — archivos en src/ modificados sin spec correspondiente (el detector de gaps)
+- **Working Agreement (activo)** — recordatorio de la regla para que el agente no olvide incluso en sesiones largas
 
 ---
 
