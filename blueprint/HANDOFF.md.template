@@ -1,10 +1,14 @@
 # HANDOFF.md — {{PROJECT_NAME}}
 
-## 🔴 Rule #1 — Read first, code after
+## 🔴 Regla #1 — Spec antes de código. Siempre.
 
-**Antes de cualquier acción**, lee `WORKING-AGREEMENT.md` y respétalo. No es opcional.
+**Antes de escribir cualquier código**, verifica que existe un spec en `docs/specs/`.
+Si no existe, escríbelo primero. Sin excepciones — incluso en sesiones largas.
 
-Resumen del flujo: analizar → sumarizar → proponer → esperar OK → escribir spec → recién ahí codear.
+**Flujo:** analizar → proponer → esperar OK → escribir spec → recién ahí codear.
+
+Lee `WORKING-AGREEMENT.md` para el contrato completo. Lee `CONTEXT.md` para el estado actual.
+La sección **"Specs pendientes"** en CONTEXT.md lista cambios que aún necesitan spec — atiéndelos primero.
 
 ## Inicio de cada sesión
 
@@ -108,10 +112,12 @@ Al agregar una feature nueva:
 
 | Doc | Sección auto-actualizada |
 |---|---|
-| `CONTEXT.md` | `## Recent Changes` |
-| `docs/constitution/constitution.md` | `## Project Status` |
-| `docs/clarify/assumptions.md` | `## Last Review` |
-| `docs/plan/v1-mvp.md` | `## Build Progress` |
+| `CONTEXT.md` | `## Últimos cambios` |
+| `CONTEXT.md` | `## Specs pendientes` ← revisar en cada sesión |
+| `CONTEXT.md` | `## Working Agreement (activo)` ← recordatorio de la regla |
+| `docs/constitution/constitution.md` | `## Estado del proyecto` |
+| `docs/clarify/assumptions.md` | `## Última revisión` |
+| `docs/plan/v1-mvp.md` | `## Progreso de construcción` |
 | `docs/specs/*.md` | marcador `<!-- status: ... -->` |
 
 **Nunca edites manualmente estas secciones** — se sobrescriben en el próximo commit.

@@ -13,7 +13,7 @@ Deja de re-explicarle tu proyecto al agente de IA en cada sesión.
 
 Este blueprint hace que tu repo sea auto-documentado para la IA — arquitectura, decisiones, restricciones, qué está hecho y qué sigue. Tu agente lo lee al inicio de cada sesión y empieza a trabajar en 30 segundos.
 
-**Agnóstico al modelo.** Funciona con la extensión VS Code de Handoff, Claude Code CLI, GPT, Gemini, Mistral y cualquier agente de IA que respete `CONTEXT.md` y `WORKING-AGREEMENT.md`.
+**Agnóstico al modelo.** Funciona con la extensión VS Code de Handoff, GPT, Gemini, Mistral y cualquier agente de IA que respete `CONTEXT.md` y `WORKING-AGREEMENT.md`.
 
 ### Inicio rápido
 
@@ -34,7 +34,7 @@ Stop re-explaining your project to your AI agent every session.
 
 This blueprint makes your repo self-documenting for AI — architecture, decisions, constraints, what's done and what's next. Your AI agent reads it at the start of every session and starts working in 30 seconds.
 
-**Model-agnostic by design.** Works with the Handoff VS Code extension, Claude Code CLI, GPT, Gemini, Mistral, and any AI agent that respects `HANDOFF.md` and `WORKING-AGREEMENT.md`.
+**Model-agnostic by design.** Works with the Handoff VS Code extension, GPT, Gemini, Mistral, and any AI agent that respects `HANDOFF.md` and `WORKING-AGREEMENT.md`.
 
 ## Quickstart
 
@@ -45,7 +45,7 @@ cd handoff-blueprint
 # Install commands globally (works with the Handoff extension)
 bash scripts/install.sh
 
-# Then in any chat with your AI agent (Handoff extension, Claude Code, etc.):
+# Luego en cualquier chat con tu agente IA:
 /bootstrap-app
 ```
 
@@ -513,7 +513,7 @@ Traditional blueprints are written for human teams. This one is designed for **h
 
 The [Handoff VS Code extension](https://handoff.cl/vscode) is the recommended host for this blueprint when you want a model-agnostic experience:
 
-- Switch between Claude, GPT, Gemini, Mistral mid-conversation without losing context
+- Switch between GPT, Gemini, Mistral, DeepSeek and more mid-conversation without losing context
 - Use your own API keys (no platform tax)
 - Slash commands from `~/.handoff/commands/` or `.handoff/commands/` (workspace)
 - Same chat works in browser at [handoff.cl](https://handoff.cl) and inside VS Code

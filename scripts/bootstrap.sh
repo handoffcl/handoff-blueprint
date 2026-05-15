@@ -12,7 +12,7 @@
 #   4. Copies all templates and renames placeholders
 #
 # Model-agnostic: works with any AI agent that respects HANDOFF.md and
-# WORKING-AGREEMENT.md (Handoff extension, Claude Code, GPT, Gemini, Mistral).
+# WORKING-AGREEMENT.md (Handoff extension, GPT, Gemini, Mistral, DeepSeek, etc.).
 
 set -e
 
@@ -119,7 +119,7 @@ echo "Next steps:"
 echo "  1. cd $PROJECT_NAME"
 echo "  2. Fill in CONTEXT.md with your project description"
 echo "  3. Copy .env.example to .env and set your values"
-echo "  4. Open the project with your AI agent (Handoff extension, Claude Code, etc.)"
+echo "  4. Open the project with your AI agent (Handoff extension, GPT, Gemini, etc.)"
 echo "     and run the bootstrap-app command"
 echo ""
 echo "Auto-update hooks installed:"

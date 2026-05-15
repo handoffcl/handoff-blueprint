@@ -3,8 +3,8 @@
 update_docs.py v2 — Keeps all living docs in sync after every commit.
 
 Triggered by:
-  - git post-commit hook
-  - Claude Code Stop hook
+  - git post-commit hook (set up by install_hooks.sh)
+  - AI agent session-end hook (Stop hook or equivalent)
 
 Surgically updates (never overwrites full files):
   - CONTEXT.md                    → ## Recent Changes
@@ -446,7 +446,7 @@ _CLARIFY_STUB: dict[str, str] = {
 
 | Assumption | Risk if wrong |
 |---|---|
-| Claude API maintains current pricing | Adjust pricing model |
+| AI provider maintains current pricing | Adjust pricing model |
 
 ---
 
@@ -490,7 +490,7 @@ _Auto-updated by scripts/update_docs.py_
 
 | Suposición | Riesgo si es falsa |
 |---|---|
-| Claude API mantiene precios actuales | Ajustar modelo de precios |
+| El proveedor de IA mantiene precios actuales | Ajustar modelo de precios |
 
 ---
 
