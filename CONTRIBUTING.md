@@ -24,7 +24,7 @@
 
 ### Qué puedes mejorar
 
-- Templates de `CONTEXT.md`, `WORKING-AGREEMENT.md` o `CLAUDE.md`
+- Templates de `CONTEXT.md`, `WORKING-AGREEMENT.md` o `HANDOFF.md`
 - Comandos `/bootstrap-app` o nuevos slash commands
 - Ejemplos de proyectos reales usando el blueprint
 - Traducciones y documentación
@@ -51,7 +51,7 @@ Thanks for wanting to contribute to Handoff Blueprint!
 
 ### What you can improve
 
-- Templates for `CONTEXT.md`, `WORKING-AGREEMENT.md` or `CLAUDE.md`
+- Templates for `CONTEXT.md`, `WORKING-AGREEMENT.md` or `HANDOFF.md`
 - The `/bootstrap-app` command or new slash commands
 - Real project examples using the blueprint
 - Translations and documentation

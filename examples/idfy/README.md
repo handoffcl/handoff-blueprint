@@ -109,7 +109,7 @@ Claude reads CONTEXT.md (auto-loaded)
 | Blueprint element | Igris implementation | Result |
 |---|---|---|
 | `CONTEXT.md` + hooks | Auto-updated every commit + session end | Zero re-explaining |
-| `CLAUDE.md` | Enforces ruff + mypy + pytest | No broken code reaches main |
+| `HANDOFF.md` | Enforces ruff + mypy + pytest | No broken code reaches main |
 | Modular architecture | `validators/`, `analyzers/`, `products/` | Changed pipeline without touching mortgage |
 | 4-layer AI pipeline | `src/validators/` + `src/analyzers/` | 85% cost reduction vs direct Sonnet |
 | Policy pattern | `policies/` one file per bank | Added BICE in 45 minutes |

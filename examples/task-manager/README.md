@@ -102,9 +102,11 @@ and real open questions documented before a single line of code is written.
 ## Try it yourself
 
 ```bash
-cp commands/bootstrap-app.md ~/.claude/commands/
-# In any Claude Code session:
+# Install the command globally (Handoff extension picks it up automatically)
+bash scripts/install.sh
+
+# Then in any chat with your AI agent:
 /bootstrap-app
-# Claude asks: "What app do you want to build?"
+# The agent asks: "¿Qué hace, para quién es y qué puede hacer un usuario en ella?"
 # You answer. Everything else follows.
 ```

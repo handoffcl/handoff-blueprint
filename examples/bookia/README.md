@@ -21,7 +21,7 @@ Bookia demonstrates it with different architectural trade-offs:
 | Blueprint element | Implementation | Result |
 |---|---|---|
 | `CONTEXT.md` + hooks | Auto-updated every commit + session end | Zero re-explaining between sessions |
-| `CLAUDE.md` | Enforces quality gate before every commit | No broken code reaches main |
+| `HANDOFF.md` | Enforces quality gate before every commit | No broken code reaches main |
 | `docs/constitution/` | Core principles that don't get re-opened | Claude never suggests violating them |
 | `docs/specs/` | Feature specs written before code | No scope creep, no ambiguity |
 | `docs/plan/` | ADRs documenting architectural decisions | Claude doesn't re-suggest ruled-out alternatives |
@@ -54,7 +54,7 @@ Developer: "So we're building a booking platform, here's how it works..."
 
 **With CONTEXT.md:**
 ```
-Claude reads CONTEXT.md (auto-loaded by CLAUDE.md instruction)
+Agent reads CONTEXT.md (auto-loaded by HANDOFF.md instruction)
 → Knows the current architecture
 → Knows the ADRs — won't re-suggest what was ruled out
 → Knows what was built last session
