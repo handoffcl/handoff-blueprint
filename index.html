@@ -483,30 +483,30 @@
       <div class="section-label">Bootstrap</div>
       <h2>De idea a app en un solo comando</h2>
       <p class="section-desc">
-        Ejecuta <code>/bootstrap-app</code> y el agente te guía paso a paso — haciendo preguntas de a una, creando toda la estructura, los documentos y los quality gates. Tú aportas la idea; el agente se encarga del andamiaje.
+        Ejecuta <code>/bootstrap-app</code> y el agente genera toda la estructura, los documentos y los quality gates desde una sola pregunta. Tú aportas la idea; el agente decide el stack y se encarga del andamiaje.
       </p>
 
       <!-- Conversation preview -->
       <div class="bootstrap-chat">
         <div class="bc-row bc-agent">
           <span class="bc-who">Agente</span>
-          <span>¿Qué app quieres construir? Descríbela en una o dos oraciones.</span>
+          <span>Cuéntame tu idea: ¿qué hace, para quién es y qué puede hacer un usuario en ella?</span>
         </div>
         <div class="bc-row bc-user">
           <span class="bc-who">Tú</span>
-          <span>Un SaaS para gestionar turnos de veterinarias, con recordatorios automáticos.</span>
+          <span>Un SaaS para gestionar turnos de veterinarias, con recordatorios automáticos por WhatsApp.</span>
         </div>
         <div class="bc-row bc-agent">
           <span class="bc-who">Agente</span>
-          <span>¿Qué stack prefieres? 1) SvelteKit full-stack · 2) SvelteKit + FastAPI · 3) Otro</span>
+          <span>Usaré <strong>SvelteKit + FastAPI</strong> porque necesitas Python para la integración con WhatsApp. ¿Seguimos?</span>
         </div>
         <div class="bc-row bc-user">
           <span class="bc-who">Tú</span>
-          <span>2 — necesito Python para los recordatorios por WhatsApp.</span>
+          <span>Sí.</span>
         </div>
         <div class="bc-row bc-agent">
           <span class="bc-who">Agente</span>
-          <span>Perfecto. Creando <code>~/proyectos/vet-turnos/</code> con toda la estructura…</span>
+          <span>Creando <code>~/proyectos/vet-turnos/</code> con toda la estructura, specs y docs…</span>
         </div>
       </div>
 
