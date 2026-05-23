@@ -25,32 +25,44 @@ The goal: a functional, stable, and scalable app from the first commit.
 
 ## Step 0 — Understand the idea
 
-Ask questions ONE AT A TIME. Wait for the answer before asking the next one.
+Ask the user ONE question and wait for the answer before generating anything:
 
-**First, ask only this:**
-"¿Qué app quieres construir? Descríbela en una o dos oraciones."
+---
+**Cuéntame tu idea: ¿qué hace, para quién es y qué puede hacer un usuario en ella?**
 
-Wait for the answer. Then ask:
-"¿Qué stack prefieres?
-1. SvelteKit full-stack (frontend + backend en un solo repo) — recomendado para la mayoría
-2. SvelteKit + FastAPI separados (cuando necesitas Python, ML o integraciones de IA)
-3. Otro (descríbelo)"
+---
 
-Wait for the answer. Then use both answers to:
+Wait for the answer. Do NOT ask follow-up questions. If the answer is too vague to infer the main features, ask ONE specific clarification before proceeding.
+
+Use the answer to:
 - Name the project (slug format, e.g. `meeting-to-tasks`)
 - Fill `CONTEXT.md` with the real problem, not placeholders
 - Write `docs/vision/product-vision.md` adapted to that idea
 - Write `docs/constitution/constitution.md` with principles for that domain
-- Write `docs/plan/v1-mvp.md` with ADRs relevant to that stack and problem
+- Write `docs/plan/v1-mvp.md` with ADRs relevant to the stack and problem
 - Write `docs/clarify/assumptions.md` with real open questions for that product
+- Write `docs/modular/modules.md` with the module breakdown inferred from the features
+- Write `docs/architecture/arquitectura.md` with the data flow and system design
 
-Do not proceed to Step 1 until you have both answers.
 Do not use generic placeholders anywhere — every doc must reflect the actual project.
 
+**Stack decision — automatic, never ask the user:**
+
+Analyze the idea and decide silently:
+- If the idea involves AI/LLM calls, ML, Python libraries, data pipelines, or heavy async processing → **SvelteKit + FastAPI**
+- Everything else (CRUDs, marketplaces, dashboards, SaaS, search, booking) → **SvelteKit fullstack**
+
+Announce the chosen stack once with a one-line reason, then offer a correction window:
+
+> "Usaré **[stack]** porque [razón en una línea]. ¿Quieres cambiar algo del stack o seguimos?"
+
+If the user confirms or says nothing → proceed to Step 1.
+If the user specifies a different stack → adapt and proceed.
+
 **Stack rules:**
-- Option 1 (SvelteKit full-stack): use SvelteKit server routes (`+server.ts`) as the API layer. Never mention FastAPI or Python backend.
-- Option 2 (SvelteKit + FastAPI): generate both repos with a clear API contract.
-- Option 3: adapt the blueprint to the described stack.
+- SvelteKit fullstack: use server routes (`+server.ts`) as the API layer. Never mention FastAPI, Python backend, or requirements.txt.
+- SvelteKit + FastAPI: generate both with a clear API contract between them.
+- User-specified stack: adapt the blueprint structure to it.
 
 ---
 
@@ -62,7 +74,7 @@ Do not use generic placeholders anywhere — every doc must reflect the actual p
 | Frontend | SvelteKit | SPA, minimal bundle, Svelte 5 `$state()` |
 | Database | PostgreSQL (prod) / SQLite (dev) · SQLAlchemy | ORM + migrations |
 | Auth | Firebase Auth (Google + Microsoft) | HTTP-only cookie |
-| Payments | Stripe (global) · Reveniu (LATAM) | Choose by market |
+| Payments | Stripe | Only if idea requires it |
 | Deploy | Railway | Managed PostgreSQL + app in one place |
 | AI | Model-agnostic via API | Haiku/Flash for cheap tasks, Sonnet/GPT-4o for analysis |
 | Quality | ruff · mypy · pytest | No exceptions |
@@ -100,7 +112,7 @@ Create the folder at `~/proyectos/<project-name>/` and build exactly this struct
 │   │   └── assumptions.md       # assumptions + open questions
 │   ├── modular/
 │   │   └── modules.md           # module contracts
-│   ├── sdd/
+│   ├── architecture/
 │   │   └── arquitectura.md      # system design document
 │   └── specs/                   # one spec per feature
 │       └── _spec.template.md
@@ -286,16 +298,19 @@ Generate `.github/workflows/ci.yml` based on the chosen stack (same patterns as 
 
 ---
 
-## Before finishing — ask the user
+## Before the final summary — generate initial specs
 
-"Do you want to start the project locally now?
-1. Yes — install dependencies and start the dev server
-2. Yes + deploy — start local and configure Railway deploy
-3. Not yet"
+Before printing the summary, generate one spec file per main feature inferred from the user's answer.
+Use the template at `docs/specs/_spec.template.md` as base.
 
-- If **1**: run `make install-dev && make dev`
-- If **2**: run `make install-dev && make dev`, then `railway login && railway init && railway up`
-- If **3**: continue without starting
+**Rules:**
+- One file per feature: `docs/specs/<feature-slug>.md`
+- Fill every section with real content from the idea — no placeholders
+- Include real behavior steps, real edge cases, real test scenarios for that domain
+- Before implementing any UI, read `.handoff/roles/senior-frontend.md` and `.handoff/roles/senior-design.md`
+- Mark each spec with `<!-- status: pending -->` at the top
+
+These specs are **mandatory before any code is written**. They are the contract.
 
 ---
 
@@ -313,18 +328,34 @@ Generate `.github/workflows/ci.yml` based on the chosen stack (same patterns as 
 ## Final summary — always print this at the end
 
 ```
-✅ Bootstrap complete — ~/proyectos/<project-name>/
+✅ Bootstrap completo — ~/proyectos/<project-name>/
 
-To continue, write any of these:
-→ "continue with recommended" — agent reads CONTEXT.md and knows what comes next
-→ "iterate and improve" — agent reviews docs/ and completes what's missing
-→ "update docs" — agent runs scripts/update_docs.py manually
+Docs generados:
+  docs/vision/product-vision.md
+  docs/constitution/constitution.md
+  docs/plan/v1-mvp.md
+  docs/clarify/assumptions.md
+  docs/modular/modules.md
+  docs/architecture/arquitectura.md
 
-🔄 Docs update automatically after every commit (git hook active):
-  CONTEXT.md · constitution.md · plan/v1-mvp.md · specs/*.md
+Specs iniciales listas en docs/specs/:
+  <lista de specs generadas>
 
-🤖 Roles available in .handoff/roles/ — activate before working in each area
+Stack: <stack elegido> — <razón en una línea>
+
+🔄 Los docs se actualizan solos después de cada commit y sesión.
+🤖 Roles disponibles en .handoff/roles/ — activar antes de trabajar en cada área
 ```
+
+After printing the summary, ask **in sequence** and wait for each answer:
+
+**Pregunta 1:** "¿Quieres que implemente las features ahora?"
+- **Sí** — implementa en orden lógico: lee cada spec, propone el plan, espera tu OK, codea (lee `.handoff/roles/senior-frontend.md` y `.handoff/roles/senior-design.md` para UI), corre `make quality`, hace commit
+- **No** — continúa a la siguiente pregunta
+
+**Pregunta 2:** "¿Levantamos el proyecto localmente? (`make install-dev && make dev`)"
+- **Sí** — ejecuta `make install-dev && make dev`
+- **No** — imprime los comandos y termina
 
 ---
 
