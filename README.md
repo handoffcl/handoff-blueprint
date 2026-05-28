@@ -39,7 +39,7 @@ This blueprint makes your repo self-documenting for AI — architecture, decisio
 ## Quickstart
 
 ```bash
-git clone https://github.com/pacman-db/handoff-blueprint
+git clone https://github.com/handoffcl/handoff-blueprint
 cd handoff-blueprint
 
 # Install commands globally (works with the Handoff extension)
@@ -247,7 +247,7 @@ What's new is not the methodology — it's that the AI puts it into practice fro
 ### Option A — New project (recommended)
 ```bash
 # 1. Clone this blueprint
-git clone https://github.com/pacman-db/handoff-blueprint
+git clone https://github.com/handoffcl/handoff-blueprint
 cd handoff-blueprint
 
 # 2. Bootstrap your project (English, default)
